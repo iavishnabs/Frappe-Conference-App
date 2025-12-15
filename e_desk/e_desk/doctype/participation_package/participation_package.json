@@ -1,0 +1,88 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-12-03 16:57:13.878150",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "package_item",
+  "conference",
+  "column_break_yfum",
+  "applicable_registration_type",
+  "section_break_nbjp",
+  "total_benefit_value",
+  "included_benefits"
+ ],
+ "fields": [
+  {
+   "fieldname": "package_item",
+   "fieldtype": "Link",
+   "label": "Package Item",
+   "options": "Item"
+  },
+  {
+   "fieldname": "applicable_registration_type",
+   "fieldtype": "Link",
+   "label": "Applicable Registration Type",
+   "options": "Registration Type"
+  },
+  {
+   "collapsible": 1,
+   "fieldname": "section_break_nbjp",
+   "fieldtype": "Section Break",
+   "label": "Package Benefits"
+  },
+  {
+   "fieldname": "included_benefits",
+   "fieldtype": "Table",
+   "label": "Included Benefits",
+   "options": "Participation Included Benefits"
+  },
+  {
+   "fieldname": "column_break_yfum",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_benefit_value",
+   "fieldtype": "Currency",
+   "label": "Total Benefit Value",
+   "read_only": 1
+  },
+  {
+   "fieldname": "conference",
+   "fieldtype": "Link",
+   "in_filter": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Conference",
+   "options": "Confer"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-12-10 17:58:22.817285",
+ "modified_by": "Administrator",
+ "module": "E Desk",
+ "name": "Participation Package",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

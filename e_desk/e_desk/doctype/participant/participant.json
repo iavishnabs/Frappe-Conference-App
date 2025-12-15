@@ -1,0 +1,244 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2023-09-13 16:47:26.466393",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "personal_information_tab",
+  "participant_details_section",
+  "naming_series",
+  "event",
+  "prefix",
+  "first_name",
+  "last_name",
+  "full_name",
+  "mobile_number",
+  "e_mail",
+  "gender",
+  "column_break_sylpb",
+  "business_category",
+  "role",
+  "chapter",
+  "date_of_birth",
+  "profile_photo",
+  "qr_preview",
+  "qr",
+  "connections_tab",
+  "scan_qr",
+  "submit",
+  "address_html",
+  "eventsconferences_tab",
+  "list_of_events"
+ ],
+ "fields": [
+  {
+   "fieldname": "participant_details_section",
+   "fieldtype": "Section Break",
+   "label": "Participant Details"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Participant Series",
+   "options": "COC-.YYYY.-.####",
+   "read_only": 1
+  },
+  {
+   "fieldname": "first_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "First Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "last_name",
+   "fieldtype": "Data",
+   "label": "Last Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "full_name",
+   "fieldtype": "Data",
+   "label": "Full Name"
+  },
+  {
+   "fieldname": "e_mail",
+   "fieldtype": "Data",
+   "label": "Email",
+   "options": "email",
+   "reqd": 1
+  },
+  {
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Phone",
+   "options": "phone",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gender",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Gender",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "column_break_sylpb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "date_of_birth",
+   "fieldtype": "Date",
+   "hidden": 1,
+   "label": "Date of birth"
+  },
+  {
+   "fieldname": "profile_photo",
+   "fieldtype": "Attach Image",
+   "label": "Profile photo"
+  },
+  {
+   "fieldname": "personal_information_tab",
+   "fieldtype": "Tab Break",
+   "label": "Profile"
+  },
+  {
+   "fieldname": "qr_preview",
+   "fieldtype": "HTML",
+   "label": "QR"
+  },
+  {
+   "fieldname": "event",
+   "fieldtype": "Link",
+   "label": "Event",
+   "options": "Confer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "prefix",
+   "fieldtype": "Link",
+   "label": "Prefix",
+   "options": "Salutation"
+  },
+  {
+   "fieldname": "chapter",
+   "fieldtype": "Link",
+   "label": "Chapter",
+   "options": "Chapter"
+  },
+  {
+   "fieldname": "role",
+   "fieldtype": "Link",
+   "label": "Role",
+   "options": "Roles"
+  },
+  {
+   "fieldname": "qr",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Qr"
+  },
+  {
+   "fieldname": "connections_tab",
+   "fieldtype": "Tab Break",
+   "label": "Connections"
+  },
+  {
+   "fieldname": "address_html",
+   "fieldtype": "HTML",
+   "label": "Address html"
+  },
+  {
+   "fieldname": "scan_qr",
+   "fieldtype": "Data",
+   "label": "Scan QR",
+   "options": "Barcode"
+  },
+  {
+   "fieldname": "submit",
+   "fieldtype": "Button",
+   "hidden": 1,
+   "label": "Submit"
+  },
+  {
+   "fieldname": "business_category",
+   "fieldtype": "Link",
+   "label": "Business Category",
+   "options": "Business Category"
+  },
+  {
+   "fieldname": "eventsconferences_tab",
+   "fieldtype": "Tab Break",
+   "label": "Events/Conferences"
+  },
+  {
+   "fieldname": "list_of_events",
+   "fieldtype": "HTML",
+   "label": "List of Events"
+  }
+ ],
+ "image_field": "profile_photo",
+ "index_web_pages_for_search": 1,
+ "links": [
+  {
+   "link_doctype": "Event Participant",
+   "link_fieldname": "participant"
+  },
+  {
+   "link_doctype": "Connections",
+   "link_fieldname": "participant_id"
+  }
+ ],
+ "modified": "2025-12-06 18:40:26.032074",
+ "modified_by": "Administrator",
+ "module": "E Desk",
+ "name": "Participant",
+ "naming_rule": "By \"Naming Series\" field",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Guest",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "title_field": "full_name"
+}

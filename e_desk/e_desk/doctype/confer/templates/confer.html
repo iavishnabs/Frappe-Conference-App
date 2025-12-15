@@ -1,0 +1,446 @@
+{% extends "templates/web.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<style>
+    /* =========================
+       MODERN FRAPPE WEB FORM
+    ========================= */
+    
+    .frappe-form {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 14px;
+      color: #1f2937;
+    }
+    
+    /* Labels */
+    .frappe-form .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+    
+    /* Inputs */
+    .frappe-form .form-control,
+    .frappe-form .form-select {
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      padding: 8px 10px;
+      font-size: 14px;
+      background-color: #fff;
+    }
+    
+    /* Focus state */
+    .frappe-form .form-control:focus,
+    .frappe-form .form-select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+    
+    /* Radio buttons */
+    .frappe-form .form-check-input {
+      cursor: pointer;
+    }
+    
+    .frappe-form .form-check-label {
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    /* Section headers (like Section Break) */
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin: 28px 0 14px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    /* Required field */
+    .required::after {
+      content: " *";
+      color: #ef4444;
+    }
+    
+    /* Modal polish */
+    .modal-content {
+      border-radius: 10px;
+      border: none;
+    }
+    
+    .modal-header {
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .modal-footer {
+      border-top: 1px solid #e5e7eb;
+    }
+    
+    /* Buttons (Frappe-like) */
+    .btn-primary {
+      background-color: #2563eb;
+      border-color: #2563eb;
+    }
+    
+    .btn-primary:hover {
+      background-color: #1e40af;
+      border-color: #1e40af;
+    }
+    
+    .btn-secondary {
+      background-color: #f3f4f6;
+      border-color: #d1d5db;
+      color: #374151;
+    }
+    
+    /* File input cleanup */
+    input[type="file"] {
+      padding: 6px;
+      font-size: 13px;
+    }
+    
+    /* Spacing consistency */
+    .frappe-form .mb-3 {
+      margin-bottom: 16px !important;
+    }
+    </style>
+    
+
+<div class="container my-5 px-5">
+
+    <!-- TITLE + THEME -->
+    <div class="text-center mb-4">
+        <h1>{{ doc.title }}</h1>
+        {% if doc.event_theme %}
+            <p class="text-muted">{{ doc.event_theme }}</p>
+        {% endif %}
+    </div>
+
+    <!-- BANNER -->
+    {% if doc.event_image %}
+    <div class="text-center my-4">
+        <img src="{{ doc.event_image }}" alt="{{ doc.title }}" class="img-fluid rounded">
+    </div>
+    {% endif %}
+
+    <!-- EVENT DETAILS -->
+    <div class="row">
+        <div class="col-md-6">
+            <h5>Event Details</h5>
+
+            {% if doc.start_date == doc.end_date %}
+                <p><strong>Date:</strong> {{ doc.start_date }}</p>
+            {% else %}
+                <p><strong>Date:</strong> {{ doc.start_date }} to {{ doc.end_date }}</p>
+            {% endif %}
+
+            <p><strong>Venue:</strong> {{ doc.venuelocation }}</p>
+        </div>
+
+        <div class="col-md-6 text-end">
+
+            {% if is_registration_closed %}
+                <span class="badge bg-danger p-2 mt-4">Registration Closed</span>
+            {% else %}
+                <p><strong>Registration closes on:</strong> {{ doc.registration_close_date }}</p>
+
+                <button class="btn btn-success mt-2"
+                data-bs-toggle="modal"
+                data-bs-target="#eventRegistrationModal">
+            Register Now
+        </button>
+
+  
+            {% endif %}
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- MAIN SECTION TABS -->
+    <ul class="nav nav-tabs" id="mainTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="agenda-tab" data-bs-toggle="tab"
+                    data-bs-target="#agendaSection" type="button" role="tab">
+                Agenda
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="venue-tab" data-bs-toggle="tab"
+                    data-bs-target="#venueSection" type="button" role="tab">
+                Venue
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="sponsors-tab" data-bs-toggle="tab"
+                    data-bs-target="#sponsorsSection" type="button" role="tab">
+                Sponsors
+            </button>
+        </li>
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="speakers-tab" data-bs-toggle="tab"
+                    data-bs-target="#speakersSection" type="button" role="tab">
+                Speakers
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-4">
+
+        <!-- ==========================
+             AGENDA SECTION
+        =========================== -->
+
+        <div class="tab-pane fade show active" id="agendaSection" role="tabpanel">
+
+            {% if agenda_list %}
+            <ul>
+                {% for item in agenda_list %}
+                <li style="margin-bottom:15px;">
+                    <strong>{{ item.program_agenda }}</strong><br>
+        
+                    {% if item.start_date %}
+                        {{ item.start_date }} – {{ item.end_date }}<br>
+                    {% endif %}
+        
+                    {% if item.description %}
+                        <small>{{ item.description }}</small>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No agenda added.</p>
+            {% endif %}
+        
+        </div>
+        
+        
+        <!-- ==========================
+             VENUE
+        =========================== -->
+        <div class="tab-pane fade" id="venueSection" role="tabpanel">
+            <h5>Venue Details</h5>
+            <p>{{ doc.venuelocation }}</p>
+        </div>
+
+        <!-- ==========================
+             SPONSORS
+        =========================== -->
+        <div class="tab-pane fade" id="sponsorsSection" role="tabpanel">
+            <h5>Sponsors</h5>
+            <p>No sponsors added yet.</p>
+        </div>
+
+        <!-- ==========================
+             SPEAKERS
+        =========================== -->
+        <div class="tab-pane fade" id="speakersSection" role="tabpanel">
+            <h5 class="mb-3">Speakers</h5>
+        
+            {% if speakers %}
+            <div class="row">
+                {% for s in speakers %}
+                <div class="col-md-3 col-sm-6 text-center mb-4">
+                    <!-- Speaker Photo -->
+                    {% if s.photo %}
+                    <img src="{{ s.photo }}" class="rounded-circle"
+                         style="width:120px;height:120px;object-fit:cover;">
+                    {% else %}
+                    <div class="rounded-circle bg-secondary"
+                         style="width:120px;height:120px;line-height:120px;color:#fff;">
+                         No Image
+                    </div>
+                    {% endif %}
+        
+                    <!-- Speaker Name -->
+                    <p class="mt-2"><strong>{{ s.full_name }}</strong></p>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+                <p>No speakers added.</p>
+            {% endif %}
+        </div>
+        
+    </div>
+
+</div>
+<div class="modal fade" id="eventRegistrationModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+  
+        <div class="modal-header">
+          <h5 class="modal-title">Register for {{ doc.title }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <div class="modal-body frappe-form">
+  
+          <form id="eventRegistrationForm">
+            <input type="hidden" name="event" value="{{ doc.name }}">
+  
+            <!-- ======================
+                 BASIC DETAILS
+            ======================= -->
+            <div class="section-title">Basic Details</div>
+  
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label required">Full Name</label>
+                <input type="text" class="form-control" name="full_name" required>
+              </div>
+  
+              <div class="col-md-6 mb-3">
+                <label class="form-label required">Email</label>
+                <input type="email" class="form-control" name="email" required>
+              </div>
+  
+              <div class="col-md-6 mb-3">
+                <label class="form-label required">Phone</label>
+                <input type="text" class="form-control" name="phone" required>
+              </div>
+  
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Profile Photo</label>
+                <input type="file" class="form-control" name="profile_photo" accept="image/*">
+              </div>
+            </div>
+  
+            <!-- ======================
+                 REGISTRATION TYPE
+            ======================= -->
+            <div class="section-title">Registration Type</div>
+
+            {% if registration_types %}
+              <div class="row">
+                {% for r in registration_types %}
+                  <div class="col-md-6 mb-2">
+                    <div class="form-check">
+                      <input class="form-check-input"
+                             type="radio"
+                             name="registration_type"
+                             value="{{ r.name }}"
+                             id="reg_{{ loop.index }}"
+                             required>
+                      <label class="form-check-label" for="reg_{{ loop.index }}">
+                        {{ r.name }}
+                      </label>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% else %}
+              <p class="text-muted">No registration types available.</p>
+            {% endif %}
+            
+          
+  
+            <!-- ======================
+                 COMPANY DETAILS
+            ======================= -->
+            <div class="section-title">Company Details</div>
+  
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Company Name</label>
+                <input type="text" class="form-control" name="company_name">
+              </div>
+  
+              <div class="col-md-6 mb-3">
+                <label class="form-label">GST Number</label>
+                <input type="text" class="form-control" name="gstn">
+              </div>
+            </div>
+  
+            <!-- ======================
+                 ADDRESS DETAILS
+            ======================= -->
+            <div class="section-title">Address</div>
+  
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Address Line 1</label>
+                <input type="text" class="form-control" name="address_line1">
+              </div>
+  
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Address Line 2</label>
+                <input type="text" class="form-control" name="address_line2">
+              </div>
+  
+              <div class="col-md-4 mb-3">
+                <label class="form-label">City</label>
+                <input type="text" class="form-control" name="city">
+              </div>
+  
+              <div class="col-md-4 mb-3">
+                <label class="form-label">State</label>
+                <input type="text" class="form-control" name="state">
+              </div>
+  
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Country</label>
+                <input type="text" class="form-control" name="country" value="India">
+              </div>
+  
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Pincode</label>
+                <input type="text" class="form-control" name="pincode">
+              </div>
+            </div>
+  
+          </form>
+  
+        </div>
+  
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" onclick="submitEventRegistration()">
+            Submit
+          </button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function submitEventRegistration() {
+    
+      let form = document.getElementById("eventRegistrationForm");
+      let formData = new FormData(form);
+    
+      frappe.call({
+        method: "e_desk.e_desk.doctype.confer.confer.create_event_registration",
+        args: {
+          data: Object.fromEntries(formData)
+        },
+        callback: function (r) {
+          if (!r.exc) {
+            frappe.msgprint("Registration submitted successfully!");
+    
+            const modalEl = document.getElementById("eventRegistrationModal");
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.hide();
+    
+            form.reset();
+          }
+        }
+      });
+    }
+    </script>
+    
+
+
+{% endblock %}

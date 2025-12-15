@@ -1,0 +1,128 @@
+[
+ {
+  "block_modules": [
+   {
+    "module": "Accounts"
+   },
+   {
+    "module": "Assets"
+   },
+   {
+    "module": "Audit Trail"
+   },
+   {
+    "module": "Automation"
+   },
+   {
+    "module": "Bulk Transaction"
+   },
+   {
+    "module": "Buying"
+   },
+   {
+    "module": "Communication"
+   },
+   {
+    "module": "Contacts"
+   },
+   {
+    "module": "Core"
+   },
+   {
+    "module": "EDI"
+   },
+   {
+    "module": "Email"
+   },
+   {
+    "module": "ERPNext Integrations"
+   },
+   {
+    "module": "Geo"
+   },
+   {
+    "module": "GST India"
+   },
+   {
+    "module": "HR"
+   },
+   {
+    "module": "Income Tax India"
+   },
+   {
+    "module": "Integrations"
+   },
+   {
+    "module": "Maintenance"
+   },
+   {
+    "module": "Manufacturing"
+   },
+   {
+    "module": "Payment Gateways"
+   },
+   {
+    "module": "Payments"
+   },
+   {
+    "module": "Payroll"
+   },
+   {
+    "module": "Portal"
+   },
+   {
+    "module": "Printing"
+   },
+   {
+    "module": "Projects"
+   },
+   {
+    "module": "Quality Management"
+   },
+   {
+    "module": "Regional"
+   },
+   {
+    "module": "Selling"
+   },
+   {
+    "module": "Setup"
+   },
+   {
+    "module": "Stock"
+   },
+   {
+    "module": "Subcontracting"
+   },
+   {
+    "module": "Support"
+   },
+   {
+    "module": "Telephony"
+   },
+   {
+    "module": "Utilities"
+   },
+   {
+    "module": "VAT India"
+   },
+   {
+    "module": "Website"
+   },
+   {
+    "module": "Workflow"
+   },
+   {
+    "module": "Custom"
+   },
+   {
+    "module": "Desk"
+   }
+  ],
+  "docstatus": 0,
+  "doctype": "Module Profile",
+  "modified": "2025-11-25 15:21:37.299072",
+  "module_profile_name": "E-desk profile",
+  "name": "E-desk profile"
+ }
+]

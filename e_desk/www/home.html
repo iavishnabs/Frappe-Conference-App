@@ -1,0 +1,73 @@
+{% extends "templates/web.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<div class="container my-5">
+
+  <div class="row mb-4">
+    <div class="col text-center">
+      <h1 class="fw-bold">Upcoming Events</h1>
+      <p class="text-muted">Discover and register for upcoming conferences</p>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    {% for event in upcoming_events %}
+      <div class="col-lg-4 col-md-6 col-sm-12">
+        <a href="/{{ event.route }}"
+           class="text-decoration-none text-dark">
+
+          <div class="card h-100 shadow-sm border-0 hover-shadow">
+            <div class="card-body">
+
+              <h5 class="card-title fw-semibold">
+                {{ event.title }}
+              </h5>
+
+              {% if event.theme %}
+                <p class="text-muted small mb-2">
+                  {{ event.theme }}
+                </p>
+              {% endif %}
+
+              <p class="mb-1 small">
+                <strong>Date:</strong>
+                {{ event.start_date }} – {{ event.end_date }}
+              </p>
+
+              {% if event.venuelocation %}
+                <p class="mb-0 small">
+                  <strong>Location:</strong> {{ event.venuelocation }}
+                </p>
+              {% endif %}
+
+            </div>
+
+            <div class="card-footer bg-white border-0 text-end">
+              <span class="text-primary fw-medium">
+                View Details →
+              </span>
+            </div>
+          </div>
+
+        </a>
+      </div>
+    {% else %}
+      <div class="col text-center text-muted">
+        No upcoming events available.
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+<style>
+.hover-shadow:hover {
+  transform: translateY(-4px);
+  transition: 0.2s ease-in-out;
+  box-shadow: 0 0.75rem 1.5rem rgba(0,0,0,0.1);
+}
+</style>
+
+{% endblock %}

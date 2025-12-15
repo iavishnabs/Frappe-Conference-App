@@ -1,0 +1,243 @@
+{
+ "actions": [],
+ "allow_guest_to_view": 1,
+ "allow_rename": 1,
+ "autoname": "field:title",
+ "creation": "2024-08-07 15:01:26.839526",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "title",
+  "abr",
+  "venuelocation",
+  "event_theme",
+  "time_zone",
+  "currency",
+  "column_break_mc7g",
+  "is_default",
+  "is_publish",
+  "route",
+  "start_date",
+  "end_date",
+  "registration_close_date",
+  "event_image",
+  "section_break_avxn",
+  "agenda",
+  "is_private",
+  "resources",
+  "attach_files",
+  "settings_tab",
+  "enable_pass_based_meal_access",
+  "column_break_dgvo",
+  "online_payment_only"
+ ],
+ "fields": [
+  {
+   "fieldname": "title",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Title",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Start date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "End date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "agenda",
+   "fieldtype": "Table",
+   "label": "Agenda",
+   "options": "Confer Agenda"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_private",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "Is private"
+  },
+  {
+   "fieldname": "attach_files",
+   "fieldtype": "Table",
+   "label": "Attachments",
+   "options": "Category Table"
+  },
+  {
+   "fieldname": "abr",
+   "fieldtype": "Data",
+   "label": "Abr",
+   "reqd": 1
+  },
+  {
+   "fieldname": "venuelocation",
+   "fieldtype": "Data",
+   "label": "Venue/Location"
+  },
+  {
+   "fieldname": "column_break_mc7g",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_avxn",
+   "fieldtype": "Section Break",
+   "label": "Programme Agenda"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_default",
+   "fieldtype": "Check",
+   "label": "Is default",
+   "read_only": 1
+  },
+  {
+   "fieldname": "time_zone",
+   "fieldtype": "Autocomplete",
+   "label": "Time Zone"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "fieldname": "registration_close_date",
+   "fieldtype": "Datetime",
+   "label": "Registration Close Date"
+  },
+  {
+   "fieldname": "resources",
+   "fieldtype": "Section Break",
+   "label": "Resources"
+  },
+  {
+   "fieldname": "settings_tab",
+   "fieldtype": "Tab Break",
+   "label": "Settings"
+  },
+  {
+   "default": "0",
+   "description": "Controls whether meal access is handled by Pass Types (requires Pass Type items) or Registration Types.",
+   "fieldname": "enable_pass_based_meal_access",
+   "fieldtype": "Check",
+   "label": "Enable Pass-Based Meal Access"
+  },
+  {
+   "default": "0",
+   "description": "Attendees must complete payment online. Payments at the registration desk are not allowed.",
+   "fieldname": "online_payment_only",
+   "fieldtype": "Check",
+   "label": "Online Payment Only"
+  },
+  {
+   "fieldname": "column_break_dgvo",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_publish",
+   "fieldtype": "Check",
+   "label": "Is Publish"
+  },
+  {
+   "fieldname": "route",
+   "fieldtype": "Data",
+   "label": "Route"
+  },
+  {
+   "fieldname": "event_image",
+   "fieldtype": "Attach Image",
+   "label": "Banner image"
+  },
+  {
+   "fieldname": "event_theme",
+   "fieldtype": "Data",
+   "label": "Theme"
+  }
+ ],
+ "has_web_view": 1,
+ "is_calendar_and_gantt": 1,
+ "is_published_field": "is_publish",
+ "links": [],
+ "modified": "2025-12-08 17:23:26.424384",
+ "modified_by": "Administrator",
+ "module": "E Desk",
+ "name": "Confer",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Guest",
+   "select": 1,
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Participant",
+   "select": 1,
+   "share": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Volunteer",
+   "select": 1,
+   "share": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "E-Desk Admin",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "route": "event",
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
