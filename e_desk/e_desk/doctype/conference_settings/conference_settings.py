@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class RegistrationType(Document):
+class ConferenceSettings(Document):
 	pass

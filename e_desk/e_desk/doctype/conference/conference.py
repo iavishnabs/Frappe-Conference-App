@@ -10,7 +10,7 @@ from datetime import date,datetime
 class Confer(WebsiteGenerator):
 
 	def before_save(self):
-        # Create a folder for this confer if it doesn't already exist
+        # Create a folder for this conference if it doesn't already exist
 		if self.registration_close_date>=self.end_date:
 			frappe.throw("The registration closing date cannot be greater than the event end date.")
 		self.create_confer_folder()
@@ -89,7 +89,7 @@ class Confer(WebsiteGenerator):
 def update_is_default_for_others(confer_name):
 
 	confer_list = frappe.get_all("Confer", filters={"is_default": 1, "name": ["!=", confer_name]}, fields=["name"])
-	frappe.db.set_value("Conferrx Settings", None, "event", confer_name)
+	frappe.db.set_value("Conference Settings", None, "event", confer_name)
 	for confer in confer_list:
 		frappe.db.set_value("Confer", confer['name'], "is_default", 0)
 

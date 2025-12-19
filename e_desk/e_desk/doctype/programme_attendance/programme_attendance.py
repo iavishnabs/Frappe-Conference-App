@@ -20,7 +20,7 @@ def scanning_validations(doc, programme,confer):
 	print(today_date,"this is today......................")
 
 	agenda_ids = frappe.db.get_value(
-        "Confer Agenda",
+        "Conference Agenda",
         filters={
             "parent": confer, 
             "program_agenda": programme,  
@@ -65,7 +65,7 @@ def scanning_validations(doc, programme,confer):
 
 #     programmes = frappe.db.sql("""
 #         SELECT agenda.name
-#         FROM `tabConfer Agenda` AS agenda
+#         FROM `tabConference Agenda` AS agenda
 #         WHERE agenda.parent = %s AND agenda.start_date >= %s
 #     """, (confer, today_date), as_list=1)
 
@@ -76,7 +76,7 @@ def get_programmes(confer):
     today_date = frappe.utils.nowdate()
     programmes = frappe.db.sql("""
         SELECT agenda.program_agenda, agenda.start_date
-        FROM `tabConfer Agenda` AS agenda
+        FROM `tabConference Agenda` AS agenda
         WHERE agenda.parent = %s AND DATE(agenda.start_date) = %s
 		AND agenda.custom_scannable = 1
     """, (confer, today_date), as_list=1)

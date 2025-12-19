@@ -282,7 +282,7 @@
    "property": "field_order",
    "property_type": "Data",
    "row_name": null,
-   "value": "[\"registration_process_section\", \"naming_series\", \"custom_scan_qr\", \"custom_submit\", \"confer\", \"abr\", \"participant_id\", \"participant_name\", \"kit_provided_\", \"custom_column_break_cslxt\", \"section_break_sec1\", \"part_profile\", \"profile_preview\", \"column_break_j8oqr\", \"qr_profile\", \"qr_preview\", \"registration_fee_collected_section\", \"mode_of_payment\", \"qr\", \"amended_from\", \"business_category\", \"custom_column_break_ztai4\", \"chapter\", \"role\"]"
+   "value": "[\"registration_process_section\", \"naming_series\", \"custom_scan_qr\", \"custom_submit\", \"conference\", \"abr\", \"participant_id\", \"participant_name\", \"kit_provided_\", \"custom_column_break_cslxt\", \"section_break_sec1\", \"part_profile\", \"profile_preview\", \"column_break_j8oqr\", \"qr_profile\", \"qr_preview\", \"registration_fee_collected_section\", \"mode_of_payment\", \"qr\", \"amended_from\", \"business_category\", \"custom_column_break_ztai4\", \"chapter\", \"role\"]"
   },
   {
    "_assign": null,

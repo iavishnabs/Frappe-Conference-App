@@ -70,7 +70,7 @@ frappe.ui.form.on('Confer', {
                         },
                         callback: function(response) {
                             frappe.show_alert({
-                                message: __('This Confer has been set as Default and others updated.'),
+                                message: __('This Conference has been set as Default and others updated.'),
                                 indicator: 'green'
                             });
                         }

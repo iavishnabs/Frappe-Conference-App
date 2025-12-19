@@ -1,8 +1,8 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "naming_series:",
- "creation": "2023-09-13 16:47:26.466393",
+ "autoname": "COC-.YYYY.-.####",
+ "creation": "2025-12-19 12:43:01.270255",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -16,25 +16,44 @@
   "first_name",
   "last_name",
   "full_name",
-  "mobile_number",
-  "e_mail",
-  "gender",
   "column_break_sylpb",
-  "business_category",
-  "role",
-  "chapter",
+  "gender",
   "date_of_birth",
   "profile_photo",
   "qr_preview",
   "qr",
+  "more_information_section",
+  "business_category",
+  "status",
+  "is_paid",
+  "customer",
+  "column_break_gsdr",
+  "role",
+  "participant_type",
+  "meal_included",
+  "kit_provided",
+  "address_contact_tab",
+  "address_and_contact_section",
+  "address",
+  "participant_address",
+  "column_break_rjon",
+  "contact",
+  "participant_contact",
+  "mobile_number",
+  "e_mail",
+  "eventsconferences_tab",
+  "list_of_events",
   "connections_tab",
   "scan_qr",
   "submit",
-  "address_html",
-  "eventsconferences_tab",
-  "list_of_events"
+  "address_html"
  ],
  "fields": [
+  {
+   "fieldname": "personal_information_tab",
+   "fieldtype": "Tab Break",
+   "label": "Profile"
+  },
   {
    "fieldname": "participant_details_section",
    "fieldtype": "Section Break",
@@ -47,6 +66,19 @@
    "label": "Participant Series",
    "options": "COC-.YYYY.-.####",
    "read_only": 1
+  },
+  {
+   "fieldname": "event",
+   "fieldtype": "Link",
+   "label": "Event",
+   "options": "Confer",
+   "reqd": 1
+  },
+  {
+   "fieldname": "prefix",
+   "fieldtype": "Link",
+   "label": "Prefix",
+   "options": "Salutation"
   },
   {
    "fieldname": "first_name",
@@ -67,18 +99,8 @@
    "label": "Full Name"
   },
   {
-   "fieldname": "e_mail",
-   "fieldtype": "Data",
-   "label": "Email",
-   "options": "email",
-   "reqd": 1
-  },
-  {
-   "fieldname": "mobile_number",
-   "fieldtype": "Data",
-   "label": "Mobile Phone",
-   "options": "phone",
-   "reqd": 1
+   "fieldname": "column_break_sylpb",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "gender",
@@ -86,10 +108,6 @@
    "hidden": 1,
    "label": "Gender",
    "options": "Gender"
-  },
-  {
-   "fieldname": "column_break_sylpb",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "date_of_birth",
@@ -103,39 +121,9 @@
    "label": "Profile photo"
   },
   {
-   "fieldname": "personal_information_tab",
-   "fieldtype": "Tab Break",
-   "label": "Profile"
-  },
-  {
    "fieldname": "qr_preview",
    "fieldtype": "HTML",
    "label": "QR"
-  },
-  {
-   "fieldname": "event",
-   "fieldtype": "Link",
-   "label": "Event",
-   "options": "Confer",
-   "reqd": 1
-  },
-  {
-   "fieldname": "prefix",
-   "fieldtype": "Link",
-   "label": "Prefix",
-   "options": "Salutation"
-  },
-  {
-   "fieldname": "chapter",
-   "fieldtype": "Link",
-   "label": "Chapter",
-   "options": "Chapter"
-  },
-  {
-   "fieldname": "role",
-   "fieldtype": "Link",
-   "label": "Role",
-   "options": "Roles"
   },
   {
    "fieldname": "qr",
@@ -144,14 +132,124 @@
    "label": "Qr"
   },
   {
+   "fieldname": "more_information_section",
+   "fieldtype": "Section Break",
+   "label": "More Information"
+  },
+  {
+   "fieldname": "business_category",
+   "fieldtype": "Link",
+   "label": "Business Category",
+   "options": "Business Category"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Open\nRegistered\nApproved\nDeclined"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_paid",
+   "fieldtype": "Check",
+   "label": "Is Paid"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "column_break_gsdr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "role",
+   "fieldtype": "Link",
+   "label": "Role",
+   "options": "Roles"
+  },
+  {
+   "fieldname": "participant_type",
+   "fieldtype": "Data",
+   "label": "Participant Type"
+  },
+  {
+   "default": "0",
+   "fieldname": "meal_included",
+   "fieldtype": "Check",
+   "label": "Meal Included"
+  },
+  {
+   "fieldname": "address_contact_tab",
+   "fieldtype": "Tab Break",
+   "label": "Address & Contact"
+  },
+  {
+   "fieldname": "address_and_contact_section",
+   "fieldtype": "Section Break",
+   "label": "Address and Contact"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "HTML",
+   "label": "Address",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.customer_primary_address",
+   "fieldname": "participant_address",
+   "fieldtype": "Link",
+   "label": "Participant Primary Address",
+   "options": "Address"
+  },
+  {
+   "fieldname": "column_break_rjon",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "contact",
+   "fieldtype": "HTML",
+   "label": "Contact",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.customer_primary_contact",
+   "fetch_if_empty": 1,
+   "fieldname": "participant_contact",
+   "fieldtype": "Link",
+   "label": "Participant Primary Contact",
+   "options": "Contact"
+  },
+  {
+   "fetch_from": "participant_contact.mobile_no",
+   "fieldname": "mobile_number",
+   "fieldtype": "Data",
+   "label": "Mobile Phone",
+   "options": "phone"
+  },
+  {
+   "fetch_from": "participant_contact.email_id",
+   "fieldname": "e_mail",
+   "fieldtype": "Link",
+   "label": "Email",
+   "options": "User"
+  },
+  {
+   "fieldname": "eventsconferences_tab",
+   "fieldtype": "Tab Break",
+   "label": "Events/Conferences"
+  },
+  {
+   "fieldname": "list_of_events",
+   "fieldtype": "HTML",
+   "label": "List of Events"
+  },
+  {
    "fieldname": "connections_tab",
    "fieldtype": "Tab Break",
    "label": "Connections"
-  },
-  {
-   "fieldname": "address_html",
-   "fieldtype": "HTML",
-   "label": "Address html"
   },
   {
    "fieldname": "scan_qr",
@@ -166,20 +264,14 @@
    "label": "Submit"
   },
   {
-   "fieldname": "business_category",
-   "fieldtype": "Link",
-   "label": "Business Category",
-   "options": "Business Category"
-  },
-  {
-   "fieldname": "eventsconferences_tab",
-   "fieldtype": "Tab Break",
-   "label": "Events/Conferences"
-  },
-  {
-   "fieldname": "list_of_events",
+   "fieldname": "address_html",
    "fieldtype": "HTML",
-   "label": "List of Events"
+   "label": "Address html"
+  },
+  {
+   "fieldname": "kit_provided",
+   "fieldtype": "Data",
+   "label": "Kit Provided"
   }
  ],
  "image_field": "profile_photo",
@@ -194,11 +286,11 @@
    "link_fieldname": "participant_id"
   }
  ],
- "modified": "2025-12-06 18:40:26.032074",
+ "modified": "2025-12-19 13:14:52.332348",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Participant",
- "naming_rule": "By \"Naming Series\" field",
+ "naming_rule": "Expression (old style)",
  "owner": "Administrator",
  "permissions": [
   {
@@ -210,6 +302,18 @@
    "read": 1,
    "report": 1,
    "role": "System Manager",
+   "select": 1,
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Participant",
+   "select": 1,
    "share": 1,
    "write": 1
   },
@@ -220,23 +324,27 @@
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "Guest",
+   "role": "Volunteer",
+   "select": 1,
    "share": 1,
    "write": 1
   },
   {
    "create": 1,
+   "delete": 1,
    "email": 1,
    "export": 1,
    "print": 1,
    "read": 1,
    "report": 1,
-   "role": "All",
+   "role": "E-Desk Admin",
+   "select": 1,
    "share": 1,
    "write": 1
   }
  ],
  "row_format": "Dynamic",
+ "search_fields": "first_name,e_mail,mobile_number",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": [],

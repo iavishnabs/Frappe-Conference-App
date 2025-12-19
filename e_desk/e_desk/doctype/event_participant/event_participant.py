@@ -63,7 +63,7 @@ def count_volunteer_registered():
 
 @frappe.whitelist()
 def get_confer_agenda_events(start, end):
-    """Fetches the events from Confer Agenda to display in the calendar view."""
+    """Fetches the events from Conference Agenda to display in the calendar view."""
 
     user = frappe.session.user
     user_roles = frappe.get_roles(user)
@@ -84,7 +84,7 @@ def get_confer_agenda_events(start, end):
 
         for conf in confer_list:
             agenda = frappe.get_all(
-                'Confer Agenda',
+                'Conference Agenda',
                 filters={
                     'parent': conf.name,
                     'start_date': ['<=', end],
@@ -132,7 +132,7 @@ def get_confer_agenda_events(start, end):
 
     for conf in confer_list:
         agenda = frappe.get_all(
-            'Confer Agenda',
+            'Conference Agenda',
             filters={
                 'parent': conf.name,
                 'start_date': ['<=', end],
@@ -156,7 +156,7 @@ def get_confer_agenda_events(start, end):
 
 # @frappe.whitelist()
 # def get_confer_agenda_events(start, end):
-#     """Fetches the events from Confer Agenda to display in the calendar view."""
+#     """Fetches the events from Conference Agenda to display in the calendar view."""
 
 #     user = frappe.session.user
 #     user_roles = frappe.get_roles(user)
@@ -172,8 +172,8 @@ def get_confer_agenda_events(start, end):
 #             'end_date': ['>=', start]
 #         }, fields=['name'])
 
-#         for confer in confer_list:
-#             agenda = frappe.get_all('Confer Agenda', filters={
+#         for conference in confer_list:
+#             agenda = frappe.get_all('Conference Agenda', filters={
 #                 'parent': confer.name,
 #                 'start_date': ['<=', end],
 #                 'end_date': ['>=', start]
@@ -201,7 +201,7 @@ def get_confer_agenda_events(start, end):
 #         'participant': participant
 #     }, fields=['event']) 
 
-#     joined_confer_ids = [confer['event'] for confer in joined_confer_list]
+#     joined_confer_ids = [confer['event'] for conference in joined_confer_list]
 #     print(joined_confer_ids,"joined_confer_idsjoined_confer_idsjoined_confer_ids")
 
 #     if not joined_confer_ids:
@@ -215,9 +215,9 @@ def get_confer_agenda_events(start, end):
 #     }, fields=['name'])
 
 
-#     # Step 2: Loop through each Confer and fetch the child table data (Confer Agenda)
-#     for confer in confer_list:
-#         agenda = frappe.get_all('Confer Agenda', filters={
+#     # Step 2: Loop through each Conference and fetch the child table data (Conference Agenda)
+#     for conference in confer_list:
+#         agenda = frappe.get_all('Conference Agenda', filters={
 #             'parent': confer.name,
 #             'start_date': ['<=', end],
 #             'end_date': ['>=', start]
@@ -237,7 +237,7 @@ def get_confer_agenda_events(start, end):
 
 
 # def has_permission(doc, ptype, user):
-#     # Allow Volunteer to access Confer Agenda
+#     # Allow Volunteer to access Conference Agenda
 #     print("this is the function....................................")
 #     if user == "Volunteer" or "Volunteer" in frappe.get_roles(user):
 #         return True
@@ -350,7 +350,7 @@ def event_participant_has_permission(doc, user):
 
 
 # def confer_agenda_has_permission(doc, user=None, permission_type=None):
-#     print("Checking permission for Confer Agenda...")
+#     print("Checking permission for Conference Agenda...")
 #     # Allow volunteers to access all actions (read, write, create, delete)
 #     if user and "Volunteer" in frappe.get_roles(user):
 #         return True

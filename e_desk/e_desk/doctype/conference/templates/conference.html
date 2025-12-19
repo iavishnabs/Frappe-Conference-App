@@ -325,12 +325,14 @@
                 {% for r in registration_types %}
                   <div class="col-md-6 mb-2">
                     <div class="form-check">
-                      <input class="form-check-input"
-                             type="radio"
-                             name="registration_type"
-                             value="{{ r.name }}"
-                             id="reg_{{ loop.index }}"
-                             required>
+                        <input class="form-check-input"
+                        type="radio"
+                        name="registration_type"
+                        value="{{ r.name }}"
+                        data-reg-type="{{ r.name | lower }}"
+                        id="reg_{{ loop.index }}"
+                        required>
+                 
                       <label class="form-check-label" for="reg_{{ loop.index }}">
                         {{ r.name }}
                       </label>
@@ -341,7 +343,21 @@
             {% else %}
               <p class="text-muted">No registration types available.</p>
             {% endif %}
-            
+            <!-- ======================
+     CONDITIONAL FIELDS
+====================== -->
+
+  
+  <div id="exhibitorStallSection" class="mt-3 d-none">
+    <label class="form-label required">Choose Stall Type</label>
+    <select class="form-select" name="stall_type">
+      <option value="">Select Stall</option>
+      <option value="2x2 Regular Stall">2 x 2 Regular Stall</option>
+      <option value="4x3 Corner Stall">4 x 3 Corner Stall</option>
+      <option value="4x4 Regular Stall">4 x 4 Regular Stall</option>
+    </select>
+  </div>
+  
           
   
             <!-- ======================
@@ -439,6 +455,33 @@
         }
       });
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const regRadios = document.querySelectorAll(
+          'input[name="registration_type"]'
+        );
+      
+        const exhibitorSection = document.getElementById("exhibitorStallSection");
+      
+        regRadios.forEach(radio => {
+          radio.addEventListener("change", function () {
+      
+            // Hide both first
+            exhibitorSection.classList.add("d-none");
+      
+            // Reset values
+            exhibitorSection.querySelector("select").value = "";
+      
+            const selectedType = this.dataset.regType;
+      
+            if (selectedType.includes("exhibitor")) {
+              exhibitorSection.classList.remove("d-none");
+            }
+          });
+        });
+      
+      });
     </script>
     
 

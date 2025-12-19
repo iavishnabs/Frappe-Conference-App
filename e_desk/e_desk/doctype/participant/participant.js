@@ -81,7 +81,7 @@ frappe.ui.form.on('Participant', {
 									label: 'Confer List',
 									fieldname: 'confer',
 									fieldtype: 'Link',
-									options: 'Confer',
+									options: 'Conference',
 									reqd: 1,
 									get_query: () => ({
 										query: "e_desk.e_desk.utils.role.get_filtered_confer",
@@ -144,7 +144,7 @@ frappe.ui.form.on('Participant', {
         },
         callback: function(r) {
             if (r.message) {
-                // Fetch start dates from linked Confer events
+                // Fetch start dates from linked Conference events
                 let events = r.message;
                 let event_names = events.map(event => event.event);
 

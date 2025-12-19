@@ -22,7 +22,7 @@ frappe.ui.form.on('Registration Desk', {
 					method: "e_desk.e_desk.doctype.registration_desk.registration_desk.registration_details",
 					args: {
 						doc: scan_data,   // Participant ID or Name from QR
-						confer: frm.doc.confer  // Confer (Event) ID
+						confer: frm.doc.conference  // Conference (Event) ID
 					},
 					callback: function(r) {
 						if (r.message) {

@@ -2,8 +2,8 @@
 # For license information, please see license.txt
 
 # import frappe
-from frappe.model.document import Document
+from frappe.tests.utils import FrappeTestCase
 
 
-class PassTypeItems(Document):
+class TestConferenceSettings(FrappeTestCase):
 	pass

@@ -39,13 +39,13 @@
    "fieldname": "confer",
    "fieldtype": "Link",
    "label": "Confer",
-   "options": "Confer"
+   "options": "Conference"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2024-08-07 15:11:54.869753",
+ "modified": "2025-12-19 13:17:37.967517",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Food Scan",
@@ -85,6 +85,7 @@
   }
  ],
  "quick_entry": 1,
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

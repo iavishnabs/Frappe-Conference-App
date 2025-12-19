@@ -1,28 +1,29 @@
 {
+ "_liked_by": "[\"Administrator\"]",
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:meal_type",
+ "autoname": "field:meal_preference_name",
  "creation": "2025-12-03 15:32:37.825881",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "meal_type"
+  "meal_preference_name"
  ],
  "fields": [
   {
-   "fieldname": "meal_type",
+   "fieldname": "meal_preference_name",
    "fieldtype": "Data",
    "in_filter": 1,
    "in_list_view": 1,
    "in_standard_filter": 1,
-   "label": "Meal Type",
+   "label": "Meal Preference Name",
    "unique": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-12-03 15:33:33.295092",
+ "modified": "2025-12-19 10:39:30.598933",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Meal Preference",

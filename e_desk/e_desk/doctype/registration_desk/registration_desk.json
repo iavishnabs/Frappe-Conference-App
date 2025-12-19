@@ -1,4 +1,5 @@
 {
+ "_liked_by": "[\"Administrator\"]",
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
@@ -113,7 +114,7 @@
    "fieldname": "confer",
    "fieldtype": "Link",
    "label": "Confer",
-   "options": "Confer",
+   "options": "Conference",
    "reqd": 1
   },
   {
@@ -160,7 +161,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-03 15:52:58.693470",
+ "modified": "2025-12-19 13:17:37.855887",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Registration Desk",

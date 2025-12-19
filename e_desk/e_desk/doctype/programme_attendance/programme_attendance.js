@@ -61,8 +61,8 @@
 
 //             return {
 //                 filters: [
-//                     ['Confer Agenda', 'start_date', '>=', startOfDay],
-//                     ['Confer Agenda', 'end_date', '<=', endOfDay]
+//                     ['Conference Agenda', 'start_date', '>=', startOfDay],
+//                     ['Conference Agenda', 'end_date', '<=', endOfDay]
 //                 ]
 //             };
 //         });

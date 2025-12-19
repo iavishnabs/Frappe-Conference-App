@@ -1,4 +1,5 @@
 {
+ "_liked_by": "[\"Administrator\"]",
  "actions": [],
  "allow_rename": 1,
  "creation": "2023-09-16 12:27:09.540868",
@@ -40,13 +41,13 @@
    "fieldname": "confer",
    "fieldtype": "Link",
    "label": "Confer",
-   "options": "Confer"
+   "options": "Conference"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-08-14 10:39:24.320525",
+ "modified": "2025-12-19 13:17:38.088051",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Attendance Scan",

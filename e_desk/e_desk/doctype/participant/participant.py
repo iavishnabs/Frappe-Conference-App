@@ -336,7 +336,7 @@ def register_event_participant(email, confer_id):
 		# 		})
 		
 		# user_permission_doc.save(ignore_permissions=True)
-		  # Create User Permission for Confer doctype
+		  # Create User Permission for Conference doctype
 		confer_permission_doc = frappe.new_doc('User Permission')
 		
 		confer_permission_doc.update({
@@ -448,10 +448,10 @@ def connection_details(email):
 # def testapi():
 # 	print("welcomeeeeeeeeeeeeeeeeeeeeee")
 
-# 	child_records = frappe.get_all("Confer Agenda", filters={"parentfield": ["=", ""]}, fields=["name"])
+# 	child_records = frappe.get_all("Conference Agenda", filters={"parentfield": ["=", ""]}, fields=["name"])
 
 # 	for record in child_records:
-# 		frappe.db.set_value("Confer Agenda", record['name'], 'parentfield', 'agenda')
+# 		frappe.db.set_value("Conference Agenda", record['name'], 'parentfield', 'agenda')
 # 		frappe.db.commit()
 
 # 	frappe.msgprint(f"Updated {len(child_records)} records successfully!")

@@ -1,4 +1,5 @@
 {
+ "_liked_by": "[\"Administrator\"]",
  "actions": [],
  "allow_rename": 1,
  "creation": "2025-12-04 10:27:51.537427",
@@ -58,7 +59,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Meal Source",
-   "options": "Included\nPurchased"
+   "options": "\nIncluded\nPurchased"
   },
   {
    "fieldname": "column_break_dwsv",
@@ -69,7 +70,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-12-04 10:45:19.380472",
+ "modified": "2025-12-19 09:23:08.573317",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Event Booking Staff",

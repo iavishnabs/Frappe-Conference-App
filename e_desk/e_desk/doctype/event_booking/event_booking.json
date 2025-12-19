@@ -1,5 +1,4 @@
 {
- "_liked_by": "[\"Administrator\"]",
  "actions": [],
  "allow_rename": 1,
  "creation": "2025-12-04 10:17:57.292001",
@@ -13,8 +12,7 @@
   "registration_type",
   "amended_from",
   "booking_details_section",
-  "participation_package",
-  "billing_item",
+  "booked_item",
   "allocated_stall_number",
   "column_break_gisv",
   "sales_invoice",
@@ -38,13 +36,7 @@
    "fieldname": "registration_type",
    "fieldtype": "Link",
    "label": "Registration Type",
-   "options": "Registration Type"
-  },
-  {
-   "fieldname": "participation_package",
-   "fieldtype": "Link",
-   "label": "Participation Package",
-   "options": "Participation Package"
+   "options": "Item Group"
   },
   {
    "fieldname": "column_break_ozyy",
@@ -104,9 +96,9 @@
    "options": "Event Participant"
   },
   {
-   "fieldname": "billing_item",
+   "fieldname": "booked_item",
    "fieldtype": "Link",
-   "label": "Billing Item",
+   "label": "Booked Item",
    "options": "Item"
   }
  ],
@@ -114,7 +106,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-15 15:29:24.519962",
+ "modified": "2025-12-19 09:21:43.938969",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Event Booking",

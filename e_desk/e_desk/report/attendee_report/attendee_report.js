@@ -17,7 +17,7 @@ frappe.query_reports["Attendee Report"] = {
             "default": frappe.datetime.get_today(),  // Optional: Sets the default to today's date
             "depends_on": "eval:doc.confer",  // You can apply conditions similar to the programme field
             "on_change": function () {
-                // Trigger when confer is selected
+                // Trigger when conference is selected
                 var confer = frappe.query_report.get_filter_value('confer');
                 var date_value=frappe.query_report.get_filter_value('date');
                 if (confer) {

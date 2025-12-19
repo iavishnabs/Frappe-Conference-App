@@ -11,7 +11,7 @@ def execute(filters=None):
             'fieldname': 'programme',
             'fieldtype': 'Link',
             'label': 'Programme',
-            'options': 'Confer Agenda',
+            'options': 'Conference Agenda',
             'width': 300
         },
         {
@@ -49,9 +49,9 @@ def execute(filters=None):
 
         print(confer, programme, f"{formatted_date} 00:00:00", "this is programme...........")
 
-        # Fetch agenda_id from Confer Agenda
+        # Fetch agenda_id from Conference Agenda
         agenda_id = frappe.db.get_value(
-            "Confer Agenda",
+            "Conference Agenda",
             filters={
                 "parent": confer,  
                 "program_agenda": programme,  # Using the programme name dynamically
@@ -109,7 +109,7 @@ def confer_agenda_list(confer, date_value):
     # SQL query with correct parameter placeholders
     programmes = frappe.db.sql("""
         SELECT agenda.program_agenda
-        FROM `tabConfer Agenda` AS agenda
+        FROM `tabConference Agenda` AS agenda
         WHERE agenda.parent = %s
         AND agenda.custom_scannable = 1
         AND DATE(agenda.start_date) = %s
