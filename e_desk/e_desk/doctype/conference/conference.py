@@ -7,7 +7,7 @@ from frappe.website.website_generator import WebsiteGenerator
 from datetime import date,datetime
 
 
-class Confer(WebsiteGenerator):
+class Conference(WebsiteGenerator):
 
 	def before_save(self):
         # Create a folder for this conference if it doesn't already exist

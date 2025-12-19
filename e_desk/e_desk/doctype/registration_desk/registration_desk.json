@@ -113,7 +113,7 @@
   {
    "fieldname": "confer",
    "fieldtype": "Link",
-   "label": "Confer",
+   "label": "Conference",
    "options": "Conference",
    "reqd": 1
   },

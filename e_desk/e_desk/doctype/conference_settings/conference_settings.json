@@ -20,7 +20,7 @@
    "fieldname": "event",
    "fieldtype": "Link",
    "label": "Event",
-   "options": "Confer"
+   "options": "Conference"
   },
   {
    "default": "0",

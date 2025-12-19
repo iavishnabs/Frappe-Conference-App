@@ -1,5 +1,5 @@
 
-frappe.views.calendar["Confer"] = {
+frappe.views.calendar["Conference"] = {
     field_map: {
         "start": "start", 
         "end": "end", 

@@ -2,7 +2,7 @@
 // For license information, please see license.txt
 
 
-frappe.ui.form.on('Confer', {
+frappe.ui.form.on('Conference', {
 
 
 
@@ -11,7 +11,7 @@ frappe.ui.form.on('Confer', {
     // onload: function(frm) {
     //     console.log("on loadadddd")
     //     frappe.call({
-    //         method: 'e_desk.e_desk.doctype.confer.confer.get_system_timezone',
+    //         method: 'e_desk.e_desk.doctype.conference.conference.get_system_timezone',
     //         callback: function(r) {
     //             if (r.message) {
     //                 console.log(r.message,"thi sis msg........")
@@ -64,7 +64,7 @@ frappe.ui.form.on('Confer', {
                 frm.save().then(() => {
                  
                     frappe.call({
-                        method: 'e_desk.e_desk.doctype.confer.confer.update_is_default_for_others',
+                        method: 'e_desk.e_desk.doctype.conference.conference.update_is_default_for_others',
                         args: {
                             confer_name: frm.doc.name
                         },
