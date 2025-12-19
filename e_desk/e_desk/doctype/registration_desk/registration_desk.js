@@ -3,16 +3,16 @@
 
 frappe.ui.form.on('Registration Desk', {
 
-	custom_scan_qr: function(frm) {
-        if (frm.doc.custom_scan_qr) {
-            frm.events.custom_submit(frm);
+	scan_qr: function(frm) {
+        if (frm.doc.scan_qr) {
+            frm.events.submit(frm);
         }
     },
-	custom_submit: function(frm) {
+	submit: function(frm) {
 		try {
 			// Parse the scanned QR data to get the Participant name (or ID)
-			// var scan_data = JSON.parse(frm.doc.custom_scan_qr).name;  // Assuming QR contains JSON data
-			var scan_data=frm.doc.custom_scan_qr
+			// var scan_data = JSON.parse(frm.doc.scan_qr).name;  // Assuming QR contains JSON data
+			var scan_data=frm.doc.scan_qr
 			console.log(scan_data, "data.");
 		
 
@@ -28,7 +28,7 @@ frappe.ui.form.on('Registration Desk', {
 						if (r.message) {
 							console.log(r.message,"this is messageee..")
 
-							frm.set_value('custom_scan_qr',"");
+							frm.set_value('scan_qr',"");
 							frm.set_value('participant_id',r.message.event_participant_id);
 							frm.set_value('participant_name', r.message.full_name);
 							frm.set_value('part_profile', r.message.profile_photo);
@@ -107,7 +107,7 @@ frappe.ui.form.on('Registration Desk', {
         frappe.call({
             method: 'frappe.client.get_list',
             args: {
-                doctype: 'Confer',
+                doctype: 'Conference',
                 fields: ['name'],
                 filters: {
                     is_default: 1

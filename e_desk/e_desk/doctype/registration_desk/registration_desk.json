@@ -1,5 +1,4 @@
 {
- "_liked_by": "[\"Administrator\"]",
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
@@ -11,11 +10,14 @@
  "engine": "InnoDB",
  "field_order": [
   "registration_process_section",
-  "naming_series",
-  "confer",
+  "scan_qr",
+  "submit",
   "abr",
   "participant_id",
   "participant_name",
+  "column_break_mefd",
+  "naming_series",
+  "confer",
   "kit_provided_",
   "section_break_sec1",
   "part_profile",
@@ -114,8 +116,7 @@
    "fieldname": "confer",
    "fieldtype": "Link",
    "label": "Conference",
-   "options": "Conference",
-   "reqd": 1
+   "options": "Conference"
   },
   {
    "fetch_from": "confer.abr",
@@ -156,12 +157,27 @@
    "fieldtype": "Data",
    "label": "Role",
    "read_only": 1
+  },
+  {
+   "fieldname": "scan_qr",
+   "fieldtype": "Data",
+   "label": "scan qr",
+   "options": "Barcode"
+  },
+  {
+   "fieldname": "submit",
+   "fieldtype": "Button",
+   "label": "submit"
+  },
+  {
+   "fieldname": "column_break_mefd",
+   "fieldtype": "Column Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-19 13:17:37.855887",
+ "modified": "2025-12-19 15:18:11.216526",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Registration Desk",
