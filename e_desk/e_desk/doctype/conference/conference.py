@@ -88,10 +88,10 @@ class Conference(WebsiteGenerator):
 @frappe.whitelist()
 def update_is_default_for_others(confer_name):
 
-	confer_list = frappe.get_all("Confer", filters={"is_default": 1, "name": ["!=", confer_name]}, fields=["name"])
+	confer_list = frappe.get_all("Conference", filters={"is_default": 1, "name": ["!=", confer_name]}, fields=["name"])
 	frappe.db.set_value("Conference Settings", None, "event", confer_name)
 	for confer in confer_list:
-		frappe.db.set_value("Confer", confer['name'], "is_default", 0)
+		frappe.db.set_value("Conference", confer['name'], "is_default", 0)
 
 	frappe.db.commit()
 
@@ -130,35 +130,106 @@ def get_speakers_for_event(event_name):
 		})
 	return speaker_list
 
-@frappe.whitelist()
-def create_event_registration(data):
-	print("hhhhhhhhh")
-	# frappe.throw("kkkk")
-
-	# data = frappe.parse_json(data)
-
-	# doc = frappe.get_doc({
-	# 	"doctype": "Event Registration",
-	# 	"event": data.get("event"),
-	# 	"full_name": data.get("full_name"),
-	# 	"email": data.get("email"),
-	# 	"phone": data.get("phone"),
-	# 	# "address": data.get("address"),
-	# 	"registration_type": data.get("registration_type"),
-	# 	"company_name": data.get("company_name"),
-	# 	"gstn": data.get("gstn"),
-	# })
-
-	# doc.insert(ignore_permissions=True)
-	# frappe.db.commit()
-
-	return {"status": "success"}
-
-import frappe
 
 def get_registration_types():
     return frappe.get_all(
-        "Registration Type",
-        fields=["name"],
-        order_by="idx asc"
+        "Item",
+        fields=["name", "item_name"],
+        filters={"item_group": "Registration Type"},
+        order_by="item_name asc"
     )
+
+
+
+
+@frappe.whitelist()
+def get_confer_agenda_events(start, end):
+    """Fetches the events from Conference Agenda to display in the calendar view."""
+
+    user = frappe.session.user
+    user_roles = frappe.get_roles(user)
+    has_e_desk_admin_role = 'E-Desk Admin' in user_roles
+
+    agenda_events = []
+
+    # ADMIN / SUPERUSER VIEW
+    if user == "Administrator" or has_e_desk_admin_role:
+        confer_list = frappe.get_all(
+            'Conference',
+            filters={
+                'start_date': ['<=', end],
+                'end_date': ['>=', start]
+            },
+            fields=['name']
+        )
+
+        for conf in confer_list:
+            agenda = frappe.get_all(
+                'Conference Agenda',
+                filters={
+                    'parent': conf.name,
+                    'start_date': ['<=', end],
+                    'end_date': ['>=', start]
+                },
+                fields=['program_agenda', 'start_date', 'end_date']
+            )
+
+            for item in agenda:
+                agenda_events.append({
+                    "doctype": "Conference",       # ⭐ Important
+                    "name": conf.name,         # ⭐ Parent doctype ID
+                    "title": item.program_agenda,
+                    "start": item.start_date,
+                    "end": item.end_date,
+                    "color": "#FF5733"
+                })
+
+        return agenda_events
+
+    # NORMAL USER VIEW
+    participant = frappe.get_value("Participant", {"e_mail": user}, "name")
+    if not participant:
+        return []
+
+    joined_confer_list = frappe.get_all(
+        'Event Participant',
+        filters={'participant': participant},
+        fields=['event']
+    )
+
+    joined_ids = [c['event'] for c in joined_confer_list]
+    if not joined_ids:
+        return []
+
+    confer_list = frappe.get_all(
+        'Conference',
+        filters={
+            'name': ["in", joined_ids],
+            'start_date': ['<=', end],
+            'end_date': ['>=', start]
+        },
+        fields=['name']
+    )
+
+    for conf in confer_list:
+        agenda = frappe.get_all(
+            'Conference Agenda',
+            filters={
+                'parent': conf.name,
+                'start_date': ['<=', end],
+                'end_date': ['>=', start]
+            },
+            fields=['program_agenda', 'start_date', 'end_date']
+        )
+
+        for item in agenda:
+            agenda_events.append({
+                "doctype": "Conference",      # ⭐ Add here
+                "name": conf.name,        # ⭐ Add here
+                "title": item.program_agenda,
+                "start": item.start_date,
+                "end": item.end_date,
+                "color": "#FF5733"
+            })
+
+    return agenda_events

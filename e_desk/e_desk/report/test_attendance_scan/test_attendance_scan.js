@@ -7,7 +7,7 @@ frappe.query_reports["Test attendance Scan"] = {
 			"fieldname": "event",
 			"label": __("Event"),
 			"fieldtype": "Link",
-			"options":"Confer",
+			"options":"Conference",
 			"reqd": 1,
 		},
 	],

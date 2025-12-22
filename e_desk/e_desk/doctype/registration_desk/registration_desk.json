@@ -27,11 +27,7 @@
   "qr_preview",
   "registration_fee_collected_section",
   "mode_of_payment",
-  "qr",
-  "amended_from",
-  "business_category",
-  "chapter",
-  "role"
+  "amended_from"
  ],
  "fields": [
   {
@@ -108,11 +104,6 @@
    "label": "Registration Process "
   },
   {
-   "fieldname": "qr",
-   "fieldtype": "Data",
-   "label": "qr"
-  },
-  {
    "fieldname": "confer",
    "fieldtype": "Link",
    "label": "Conference",
@@ -141,24 +132,6 @@
    "options": "Event Participant"
   },
   {
-   "fieldname": "business_category",
-   "fieldtype": "Data",
-   "label": "Business Category",
-   "read_only": 1
-  },
-  {
-   "fieldname": "chapter",
-   "fieldtype": "Data",
-   "label": "Chapter",
-   "read_only": 1
-  },
-  {
-   "fieldname": "role",
-   "fieldtype": "Data",
-   "label": "Role",
-   "read_only": 1
-  },
-  {
    "fieldname": "scan_qr",
    "fieldtype": "Data",
    "label": "scan qr",
@@ -167,6 +140,7 @@
   {
    "fieldname": "submit",
    "fieldtype": "Button",
+   "hidden": 1,
    "label": "submit"
   },
   {
@@ -177,7 +151,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-19 15:18:11.216526",
+ "modified": "2025-12-22 10:20:39.715275",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Registration Desk",

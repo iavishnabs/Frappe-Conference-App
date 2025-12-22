@@ -13,7 +13,7 @@ from e_desk.e_desk.doctype.registration_desk.registration_desk import Registrati
 class Participant(Document):
 	# @frappe.whitelist(allow_guest=True)
 	def after_insert(self):
-		time_zone = frappe.get_value("Confer", {"is_default": 1}, "time_zone")
+		time_zone = frappe.get_value("Conference", {"is_default": 1}, "time_zone")
 		if not time_zone:
 			frappe.throw("PLease add Conference Time zone")
 		if not self.full_name:
@@ -70,7 +70,7 @@ class Participant(Document):
 		
 			confer_permission_doc.update({
 				"user": self.e_mail,
-				"allow": "Confer",
+				"allow": "Conference",
 				"for_value": confer_id,
 				"apply_to_all_doctypes": False, 
 			})
@@ -341,9 +341,9 @@ def register_event_participant(email, confer_id):
 		
 		confer_permission_doc.update({
             "user": email,
-            "allow": "Confer",
+            "allow": "Conference",
             "for_value": confer_id,
-            "apply_to_all_doctypes": False,  # Set to False if you want this permission to apply only to this specific Confer
+            "apply_to_all_doctypes": False,  # Set to False if you want this permission to apply only to this specific Conference
         })
 		confer_permission_doc.save(ignore_permissions=True)
 
@@ -368,7 +368,7 @@ def connection_doc(doc_name,email):
 	if connection_id:
 		frappe.throw("This participant is already connected")
 
-	event_id = frappe.db.get_value("Confer", {"is_default": 1}, "name")
+	event_id = frappe.db.get_value("Conference", {"is_default": 1}, "name")
 	print(event_id,"this is even")
 
 	if user_data:

@@ -85,7 +85,8 @@ fixtures = [
 # ------------
 
 # before_install = "e_desk.install.before_install"
-# after_install = "e_desk.install.after_install"
+# after_install = "e_desk.e_desk.custom_fields_setup.create_doc_custom_fields"
+# after_migrate = "e_desk.e_desk.custom_fields_setup.create_doc_custom_fields"
 
 # Uninstallation
 # ------------
@@ -105,8 +106,8 @@ fixtures = [
 
 permission_query_conditions = {
 	# "File": "e_desk.e_desk.utils.py.permissions.file.get_file_permission",
-    "Participant":"e_desk.e_desk.utils.py.permissions.file.participant_query_conditions",
-    "Event Participant": "e_desk.e_desk.doctype.event_participant.event_participant.event_has_permission"
+    # "Participant":"e_desk.e_desk.utils.py.permissions.file.participant_query_conditions",
+    # "Event Participant": "e_desk.e_desk.doctype.event_participant.event_participant.event_has_permission"
     
 }
 # permission_query_conditions = {
@@ -114,9 +115,9 @@ permission_query_conditions = {
 # }
 #
 has_permission = {
-	"Participant": "e_desk.e_desk.doctype.event_participant.event_participant.participant_has_permission",
-    "Event Participant":"e_desk.e_desk.doctype.event_participant.event_participant.event_participant_has_permission",
-    # "Confer":"e_desk.e_desk.doctype.event_participant.event_participant.confer_has_permission"
+	# "Participant": "e_desk.e_desk.doctype.event_participant.event_participant.participant_has_permission",
+    # "Event Participant":"e_desk.e_desk.doctype.event_participant.event_participant.event_participant_has_permission",
+    # "Conference":"e_desk.e_desk.doctype.event_participant.event_participant.confer_has_permission"
     
    
 }

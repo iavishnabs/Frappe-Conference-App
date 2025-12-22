@@ -25,7 +25,7 @@
    "fieldname": "conference",
    "fieldtype": "Link",
    "label": "Conference",
-   "options": "Confer"
+   "options": "Conference"
   },
   {
    "fieldname": "company_name",
@@ -106,7 +106,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-12-19 09:21:43.938969",
+ "modified": "2025-12-22 09:41:33.689550",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Event Booking",

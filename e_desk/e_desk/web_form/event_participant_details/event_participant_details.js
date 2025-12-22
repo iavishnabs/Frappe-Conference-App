@@ -6,7 +6,7 @@
     // if (storedConferId) {
 		
 	// 			frappe.web_form.doc.parent = storedConferId;
-	// 			frappe.web_form.doc.parenttype = 'Confer'; 
+	// 			frappe.web_form.doc.parenttype = 'Conference'; 
 	// 			frappe.web_form.doc.parentfield = 'event_participant';
 	// 			frappe.web_form.column.doctype='event_participant';
 	// 			frappe.web_form.section.doctype='event_participant';

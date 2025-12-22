@@ -71,7 +71,7 @@
    "fieldname": "event",
    "fieldtype": "Link",
    "label": "Event",
-   "options": "Confer",
+   "options": "Conference",
    "reqd": 1
   },
   {
@@ -105,14 +105,12 @@
   {
    "fieldname": "gender",
    "fieldtype": "Link",
-   "hidden": 1,
    "label": "Gender",
    "options": "Gender"
   },
   {
    "fieldname": "date_of_birth",
    "fieldtype": "Date",
-   "hidden": 1,
    "label": "Date of birth"
   },
   {
@@ -286,7 +284,7 @@
    "link_fieldname": "participant_id"
   }
  ],
- "modified": "2025-12-19 13:14:52.332348",
+ "modified": "2025-12-22 10:10:48.815001",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Participant",

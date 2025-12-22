@@ -6,14 +6,14 @@ def get_context(context):
 
     # DETAIL PAGE
     if event_name:
-        event = frappe.get_doc("Confer", event_name)
+        event = frappe.get_doc("Conference", event_name)
         context.event = event
         context.is_closed = date.today() > event.registration_close_date
         return context
 
     # LIST VIEW
     context.upcoming_events = frappe.get_all(
-        "Confer",
+        "Conference",
         filters={"is_publish": 1},
         fields=["name", "title", "theme", "start_date", "end_date", "venuelocation","route"],
         order_by="start_date asc"

@@ -5,7 +5,7 @@ frappe.query_reports["Attendee Report"] = {
             "fieldname": "confer",
             "label": __("Confer"),
             "fieldtype": "Link",
-            "options": "Confer",
+            "options": "Conference",
             "reqd": 1,
        
         },

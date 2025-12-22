@@ -6,7 +6,7 @@ from werkzeug.wrappers import Response
 
 @frappe.whitelist(allow_guest=True)
 def default_confer():
-    data=frappe.get_value('Confer', {"is_default":True},['name', 'start_date', 'end_date' , "venuelocation","event_image","registration_close_date"],as_dict=1)
+    data=frappe.get_value('Conference', {"is_default":True},['name', 'start_date', 'end_date' , "venuelocation","event_image","registration_close_date"],as_dict=1)
     return data
 
 @frappe.whitelist(allow_guest=True)

@@ -1,12 +1,12 @@
 
 frappe.views.calendar["Conference"] = {
     field_map: {
-        "start": "start", 
-        "end": "end", 
+        "start": "start_date", 
+        "end": "end_date", 
         "title": "title", 
         "eventColor": "color"
     },
     gantt: true,
     
-    get_events_method: "e_desk.e_desk.doctype.event_participant.event_participant.get_confer_agenda_events"
+    get_events_method: "e_desk.e_desk.doctype.conference.conference.get_confer_agenda_events"
 };

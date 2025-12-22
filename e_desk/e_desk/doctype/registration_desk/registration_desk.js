@@ -22,7 +22,7 @@ frappe.ui.form.on('Registration Desk', {
 					method: "e_desk.e_desk.doctype.registration_desk.registration_desk.registration_details",
 					args: {
 						doc: scan_data,   // Participant ID or Name from QR
-						confer: frm.doc.conference  // Conference (Event) ID
+						confer: frm.doc.confer  // Conference (Event) ID
 					},
 					callback: function(r) {
 						if (r.message) {
@@ -33,9 +33,6 @@ frappe.ui.form.on('Registration Desk', {
 							frm.set_value('participant_name', r.message.full_name);
 							frm.set_value('part_profile', r.message.profile_photo);
 							frm.set_value('qr_profile', r.message.qr);
-							frm.set_value('business_category',r.message.business_category)
-							frm.set_value('chapter',r.message.chapter)
-							frm.set_value('role',r.message.role)
 
 							// Display the profile image in the profile_preview field
 							if (r.message.profile_photo) {

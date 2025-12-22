@@ -6,7 +6,7 @@
  "doctype": "Number Card",
  "document_type": "Event Participant",
  "dynamic_filters_json": "[[\"Event Participant\",\"event\",\"=\",\"frappe.db.get_single_value(\\\"CCA Settings\\\",\\\"event\\\")\"]]",
- "filters_config": "\n{\n    \"is_standard\": 0,\n    \"module\": \"E Desk\",\n    \"label\": \"Event Participant Count\",\n    \"type\": \"Custom\",\n    \"method\": \"e_desk.event_participant.get_event_participant_count\", \n    \"is_public\": 1,\n    \"filters_config\": [\n        {\n            \"fieldname\": \"event\",\n            \"label\": \"Event\",\n            \"fieldtype\": \"Link\",\n            \"options\": \"Confer\",\n            \"reqd\": 1\n        }\n    ]\n}\n",
+ "filters_config": "\n{\n    \"is_standard\": 0,\n    \"module\": \"E Desk\",\n    \"label\": \"Event Participant Count\",\n    \"type\": \"Custom\",\n    \"method\": \"e_desk.event_participant.get_event_participant_count\", \n    \"is_public\": 1,\n    \"filters_config\": [\n        {\n            \"fieldname\": \"event\",\n            \"label\": \"Event\",\n            \"fieldtype\": \"Link\",\n            \"options\": \"Conference\",\n            \"reqd\": 1\n        }\n    ]\n}\n",
  "filters_json": "[[\"Event Participant\",\"status\",\"=\",\"Registered\",false]]",
  "function": "Count",
  "idx": 0,

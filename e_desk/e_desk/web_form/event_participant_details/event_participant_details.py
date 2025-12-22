@@ -16,7 +16,7 @@ def get_context(context):
 #     exist = frappe.get_value('Event Participant', {'participant': user, 'parent': conf}, 'name')
     
 
-#     conf_doc = frappe.get_doc('Confer', conf)
+#     conf_doc = frappe.get_doc('Conference', conf)
     
 
 #     event_dict = {}

@@ -1,4 +1,5 @@
 {
+ "_liked_by": "[\"Administrator\"]",
  "actions": [],
  "allow_rename": 1,
  "creation": "2024-10-23 10:16:02.096517",
@@ -44,7 +45,7 @@
    "fieldname": "event",
    "fieldtype": "Link",
    "label": "Event",
-   "options": "Confer"
+   "options": "Conference"
   },
   {
    "fieldname": "business_category",
@@ -59,7 +60,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-10-23 11:52:26.588631",
+ "modified": "2025-12-22 09:42:19.575588",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Connections",
@@ -78,6 +79,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "modified",
  "sort_order": "DESC",
  "states": []

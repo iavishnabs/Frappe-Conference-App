@@ -12,7 +12,7 @@
    "fieldtype": "Link",
    "label": "Event",
    "mandatory": 0,
-   "options": "Confer",
+   "options": "Conference",
    "wildcard_filter": 0
   }
  ],

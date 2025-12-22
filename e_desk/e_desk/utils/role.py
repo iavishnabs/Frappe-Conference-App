@@ -54,7 +54,7 @@ def get_filtered_confer(doctype, txt, searchfield, start, page_len,filters):
     # conf = frappe.db.sql(
     #     """
     #     SELECT c.name
-    #     FROM `tabConfer` AS c
+    #     FROM `tabConference` AS c
     #     JOIN `tabEvent Participant` AS ep ON c.name = ep.parent
     #     WHERE ep.participant = %(participant)s
 

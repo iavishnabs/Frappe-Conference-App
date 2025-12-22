@@ -8,7 +8,7 @@ frappe.ui.form.on('Participant', {
         frappe.call({
             method: 'frappe.client.get_list',
             args: {
-                doctype: 'Confer',
+                doctype: 'Conference',
                 fields: ['name'],
                 filters: {
                     is_default: 1
@@ -151,7 +151,7 @@ frappe.ui.form.on('Participant', {
                 frappe.call({
                     method: 'frappe.client.get_list',
                     args: {
-                        doctype: 'Confer',
+                        doctype: 'Conference',
                         filters: {
                             'name': ['in', event_names]
                         },
