@@ -11,479 +11,324 @@ from e_desk.e_desk.doctype.registration_desk.registration_desk import Registrati
 
 
 class Participant(Document):
-	# @frappe.whitelist(allow_guest=True)
+
 	def after_insert(self):
-		time_zone = frappe.get_value("Conference", {"is_default": 1}, "time_zone")
+		if not self.event:
+			frappe.throw("Event is required to determine time zone")
+		time_zone = frappe.db.get_value(
+			"Conference",
+			self.event,
+			"time_zone"
+		)
 		if not time_zone:
-			frappe.throw("PLease add Conference Time zone")
-		if not self.full_name:
-			self.full_name = f"{self.first_name} {self.last_name}"
-			self.save(ignore_permissions=True)
-		if not self.e_mail:
-			frappe.throw("Email is required to create a new User.")
+			frappe.throw(f"Please set Time Zone for Conference: {self.event}")
 
-		
-		if not frappe.db.exists('User',self.e_mail):
-			doc=frappe.new_doc('User')
-			doc.update({
-				"email":self.e_mail,
-				"time_zone":time_zone,
-				"first_name":self.first_name,
-				"last_name":self.last_name,
-				"mobile_no":self.mobile_number,
-				# "new_password":self.mobile_number,
-				"send_welcome_email":1,
-				# "role_profile_name":"Participant",
-				"user_type":"System User",
-				"module_profile":"E-desk profile",
-				"participant_id":self.name
+		# Find or create User
+		user = frappe.db.get_value("User", {"email": self.e_mail}, "name")
+		if user:
+			user_doc = frappe.get_doc("User", user)
 
+			# here check their previous participant record and customer field value there, and assign that customer to here and 
+		else:
+			user_doc = frappe.new_doc("User")
+			user_doc.update({
+				"email": self.e_mail,
+				"first_name": self.first_name,
+				"last_name": self.last_name,
+				"mobile_no": self.mobile_number,
+				"time_zone": time_zone,
+				"user_type": "System User",
+				"send_welcome_email": 0,
+				"module_profile": "E-desk profile"
 			})
-
 			if frappe.db.exists("Role", "Participant"):
-				doc.append("roles", {"role": "Participant"})
-		
-			# roles = frappe.get_roles("Participant")
-			# for role in roles:
-			# 	doc.append("roles", {"role": role})
-			
-			doc.save(ignore_permissions=True)
-			qr=RegistrationDesk.create_qr_participant(self)
-			print(qr,"data coming from this..................qr")
-			self.save()
-			confer_id = self.event
-			if confer_id:
-				# Create an Event Participant document
-				event_participant_doc = frappe.new_doc('Event Participant')
-				event_participant_doc.update({
-					"participant": self.name,
-					"event": confer_id,
-					"event_role":"Participant",
-					"business_category":self.business_category,
-					"role":self.role,
-					"chapter":self.chapter
+				user_doc.append("roles", {"role": "Participant"})
 
-				})
-				event_participant_doc.save(ignore_permissions=True)
-        
-			confer_permission_doc = frappe.new_doc('User Permission')
-		
-			confer_permission_doc.update({
+			user_doc.insert(ignore_permissions=True)
+		self.db_set("user", user_doc.name)   
+
+		# User Permission for Conference and User
+		if self.event and not frappe.db.exists("User Permission", {
+			"user": self.e_mail,
+			"allow": "Conference",
+			"for_value": self.event
+		}):
+			self.create_user_permissions()
+		if not self.customer:
+			existing_customer = self.get_existing_customer_from_previous_participant()
+			if existing_customer:
+				self.db_set("customer", existing_customer)
+			else:
+				self.create_customer()
+		self.create_address_and_contact()
+
+	def validate(self):
+		self.sync_contact_details()
+		self.sync_booked_by_from_event_booking()
+		self.set_full_name()
+
+	def set_full_name(self):
+		self.full_name = f"{self.first_name} {self.last_name}"
+
+	def create_user_permissions(self):
+		if not self.e_mail:
+			return
+
+		# 1️⃣ Conference permission
+		if self.event and not frappe.db.exists("User Permission", {
+			"user": self.e_mail,
+			"allow": "Conference",
+			"for_value": self.event
+		}):
+			frappe.get_doc({
+				"doctype": "User Permission",
 				"user": self.e_mail,
 				"allow": "Conference",
-				"for_value": confer_id,
-				"apply_to_all_doctypes": False, 
+				"for_value": self.event,
+				"apply_to_all_doctypes": False
+			}).insert(ignore_permissions=True)
+
+		# 2️⃣ User self-permission (CRITICAL)
+		if not frappe.db.exists("User Permission", {
+			"user": self.e_mail,
+			"allow": "User",
+			"for_value": self.e_mail
+		}):
+			frappe.get_doc({
+				"doctype": "User Permission",
+				"user": self.e_mail,
+				"allow": "User",
+				"for_value": self.e_mail,
+				"apply_to_all_doctypes": False
+			}).insert(ignore_permissions=True)
+
+	def create_address_and_contact(self):
+		if not self.customer:
+			return
+
+		# 1. Create Address
+		address = frappe.get_doc({
+			"doctype": "Address",
+			"address_title": self.address_title,
+			"address_type": "Billing", 
+			"address_line1": self.address_line_1,
+			"address_line2":self.address_line_2,
+			"city": self.city,
+			"state": self.state,
+			"country": self.country,
+			"links": [
+				{
+					"link_doctype": "Customer",
+					"link_name": self.customer,
+				},
+				{
+					"link_doctype": "Participant",
+					"link_name": self.name,
+				},
+			],
+		})
+		address.insert(ignore_permissions=True)
+
+		# 2. Create Contact
+		contact = frappe.get_doc({
+			"doctype": "Contact",
+			"first_name": self.customer,
+			"links": [
+				{
+					"link_doctype": "Customer",
+					"link_name": self.customer,
+				},
+				{
+					"link_doctype": "Participant",
+					"link_name": self.name,
+				},
+			],
+		})
+		if self.e_mail:
+			contact.append("email_ids", {
+				"email_id": self.e_mail,
+				"is_primary": 1,
 			})
-			confer_permission_doc.save(ignore_permissions=True)
+		if self.mobile_number:
+			contact.append("phone_nos", {
+				"phone": self.mobile_number,
+				"is_primary_phone": 1, 
+			})
 
-			# frappe.msgprint(
-            #     msg=f"User created successfully!<br>Login Email: {doc.email}<br>Login Password: {self.mobile_number}",
-            #     title="User Login Details",
-            #     indicator='green'
-            # )
-	
-	def validate(self):
-		# Check if profile_photo is set and find related User document
-		if self.profile_photo:
-			# Attempt to find an existing User with this participant_id
-			user = frappe.db.get_value("User", {"participant_id": self.name}, "name")
-			
-			# Only update if a User with this participant_id already exists
-			if user:
-				frappe.db.set_value("User", user, "user_image", self.profile_photo)
-
-	@frappe.whitelist()
-	def categoryfile_fetching(doc, a=None):
-		category_files=frappe.get_all('Category Table', filters={'parent': 'CCA Settings'}, fields=['attach'])
-		doc=frappe.get_doc(doc)
-		doc.update({
-			"category_files":category_files,
-		})
-		# doc.save()
-		return category_files
-
-	def on_trash(self):
-		user_list=frappe.get_list("User",filters={"participant_id":self.name},pluck='name')
-		for i in user_list:
-			user=frappe.get_doc("User",i)
-			user.enabled=0
-			user.participant_id=''
-			user.save()
+		contact.insert(ignore_permissions=True)
+		self.db_set("participant_address", address.name)
+		self.db_set("participant_contact", contact.name)
+		frappe.db.set_value("Customer", self.customer, "customer_primary_address", address.name)
+		frappe.db.set_value("Customer", self.customer, "customer_primary_contact", contact.name)
 
 
-# Converting the participant to volunteer
-@frappe.whitelist()
-def volunteer_creation(doc):
-	doc=json.loads(doc)
-	# v_doc=frappe.new_doc('Volunteer')
-	# v_doc.update({
-	# 	"e_mail":doc.get('e_mail'),
-	# 	"mobile_number":doc.get('mobile_number'),
-	# 	"name1":doc.get('full_name'),
-	# 	"participant":doc.get('name'),
-	# 	"module_profile":"E-desk profile",
-	# }),
-	# v_doc.save()
+	def create_customer(self):
+		if not self.set_full_name:
+			self.set_full_name()
 
-	# converting the user to volunteer profile
-	user=frappe.get_doc("User",doc.get('e_mail'))
-	existing_roles = [r.role for r in user.roles]
-	if "Volunteer" not in existing_roles:
-		user.append("roles", {"role": "Volunteer"})
-	user.update(
-		{
-			# "role_profile_name":"Volunteer",
-			"user_type":"System User"
-		}
-	)
-	user.save()
-	frappe.db.commit()
+		customer = frappe.get_doc({
+        "doctype": "Customer",
+        "customer_name": self.full_name,
+        "customer_type": "Individual",
+		}).insert(ignore_permissions=True)
+		self.db_set("customer", customer.name)
+
+	def get_existing_customer_from_previous_participant(self):
+		previous_customer = frappe.db.get_value(
+			"Participant",
+			{
+				"e_mail": self.e_mail,
+				"customer": ["!=", ""],
+				"name": ["!=", self.name],
+			},
+			"customer",
+		)
+		return previous_customer
 
 
 
-@frappe.whitelist()
+	def sync_contact_details(self):
+		if not self.participant_contact:
+			return
+		contact = frappe.get_doc("Contact", self.participant_contact)
+		email = None
+		for e in contact.email_ids:
+			if e.is_primary:
+				email = e.email_id
+				break
+		if not email and contact.email_ids:
+			email = contact.email_ids[0].email_id
 
-def validate_food(doc):
-	food_scan = frappe.db.get_single_value("CCA Settings", "food_scan_hours")
+		phone = None
+		for p in contact.phone_nos:
+			if p.is_primary_phone:
+				phone = p.phone
+				break
+		if not phone and contact.phone_nos:
+			phone = contact.phone_nos[0].phone
 
-	scanned_time = ''
-	buffer_hours = timedelta(hours=food_scan)
-	current_time = now()
+		if email:
+			self.e_mail = email
+		if phone:
+			self.mobile_number = phone
 
-	if doc:
-		doc_par = frappe.get_doc("Participant", doc)
-		doc_par.append("food_scan", {
-			"datetime":current_time
-		})
-
-		if len(doc_par.food_scan) >= 2:
-			length = len(doc_par.food_scan)
-
-			scanned_time = doc_par.food_scan[length - 2].datetime
-			if scanned_time:
-				time_difference = get_datetime(current_time) - get_datetime(scanned_time)
-				if time_difference < buffer_hours:
-					frappe.throw(f"Food Already Scanned at {scanned_time}")
-				else:
-					
-					doc_par.save()
-					doc_par.append("attendance_list", {
-						"datetime":current_time
-					})
-
-					if len(doc_par.attendance_list) >= 2:
-						length = len(doc_par.attendance_list)
-
-						scanned_time = doc_par.attendance_list[length - 2].datetime
-						if scanned_time:
-							time_difference = get_datetime(current_time) - get_datetime(scanned_time)
-							if time_difference < buffer_hours: 
-								pass
-							else:
-								doc_par.save()
-					else:
-						doc_par.save()
-		else:
-			doc_par.save()
-		
-	return doc
+	def sync_booked_by_from_event_booking(self):
+		if not self.stall_or_sponsor_booking:
+			return
+		booking = frappe.get_doc("Event Booking", self.stall_or_sponsor_booking)
+		if not booking.participant:
+			return
+		email = frappe.db.get_value(
+			"Participant",
+			booking.participant,
+			"e_mail"
+		)
+		if email:
+			self.booked_by = email
 
 @frappe.whitelist()
+def get_contact_html(contact_name):
+	if not contact_name:
+		return ""
+	contact = frappe.get_doc("Contact", contact_name)
+	email = contact.email_ids[0].email_id if contact.email_ids else ""
+	phone = contact.phone_nos[0].phone if contact.phone_nos else ""
+	html = f"""
+		<div class="address-box" style="padding:8px;">
+			<div style="display:flex; justify-content:space-between; align-items:center;">
+				<strong>{contact.full_name or ""}</strong>
 
-def validate_attendance(doc):
-	attendance_scan = frappe.db.get_single_value("CCA Settings", "attendance_scan_hours")
-	frappe.errprint(attendance_scan)
-	scanned_time = ''
-	buffer_hours = timedelta(hours=attendance_scan)
-	current_time = now()
+				<a class="btn btn-xs btn-link"
+				href="/app/contact/{contact.name}"
+				title="Edit Contact">
+					<i class="fa fa-pencil"></i>
+				</a>
+			</div>
 
-	if doc:
-		doc_par = frappe.get_doc("Participant", doc)
-		doc_par.append("attendance_list", {
-			"datetime":current_time
-		})
-
-		if len(doc_par.attendance_list) >= 2:
-			length = len(doc_par.attendance_list)
-
-			scanned_time = doc_par.attendance_list[length - 2].datetime
-			if scanned_time:
-				time_difference = get_datetime(current_time) - get_datetime(scanned_time)
-				if time_difference < buffer_hours:
-					frappe.throw(f"Attendance Already Scanned at {scanned_time}")
-				else:
-					doc_par.save()
-		else:
-			doc_par.save()
-		
-	return doc
-@frappe.whitelist()
-
-def full_address(address):
-	hotel=frappe.get_doc("Hotel",address)
-	add=frappe.get_doc("Address",hotel.address)
-	search_text = ""
-
-	if add.address_title:
-		search_text = search_text  + add.address_title
-		
-	if add.address_line1:
-		search_text = search_text + ",<br>"+add.address_line1
-
-
-	if add.city:
-		search_text = search_text + ",<br>" + add.city
-
-	if add.state:
-		search_text = search_text + ",<br>" + add.state
-
-	if add.country:
-		search_text = search_text + ",<br>" + add.country
-
-	if add.pincode:
-		search_text = search_text + ",<br>" + add.pincode
-	
-	return search_text
+			<div>{email}</div>
+			<div>{phone}</div>
+		</div>
+		"""
+	return html
 
 @frappe.whitelist()
+def get_address_html(address_name):
+	if not address_name:
+		return ""
+	address = frappe.get_doc("Address", address_name)
+	html = f"""
+	<div class="address-box" style="padding:8px;">
+		<div style="display:flex; justify-content:space-between; align-items:center;">
+			<strong>{address.address_title or ""}</strong>
 
-def full_address_church(address):
-	hotel=frappe.get_doc("Church",address)
-	add=frappe.get_doc("Address",hotel.address)
-	search_text = ""
+			<a class="btn btn-xs btn-link"
+			   href="/app/address/{address.name}"
+			   title="Edit Address">
+				<i class="fa fa-pencil"></i>
+			</a>
+		</div>
+		<div>{address.address_line1 or ""}</div>
+		{"<div>" + address.address_line2 + "</div>" if address.address_line2 else ""}
+		<div>
+			{address.city or ""}{" - " + address.pincode if address.pincode else ""}
+		</div>
+		<div>
+			{address.state or ""}, {address.country or ""}
+		</div>
+	</div>
+	"""
+	return html
 
-	if add.address_title:
-		search_text = search_text  + add.address_title
-		
-	if add.address_line1:
-		search_text = search_text + ",<br>"+add.address_line1
+@frappe.whitelist()
+def connection_doc(scanned_user, email):
+    """
+    scanned_user = QR value (User ID that was scanned)
+    email        = current User email (scanner)
+    """
 
+    # 1️⃣ Check if connection already exists
+    exists = frappe.db.exists(
+        "Connections",
+        {
+            "participant_id": email,     # ME
+            "email": scanned_user         # PERSON I SCANNED
+        }
+    )
 
-	if add.city:
-		search_text = search_text + ",<br>" + add.city
+    if exists:
+        return {"status": "exists"}
 
-	if add.state:
-		search_text = search_text + ",<br>" + add.state
+    # 2️⃣ Get scanned user's details
+    scanned = frappe.get_doc("User", scanned_user)
 
-	if add.country:
-		search_text = search_text + ",<br>" + add.country
+    # 3️⃣ Create new connection
+    conn = frappe.get_doc({
+        "doctype": "Connections",
+        "participant_id": email,              # ✅ scanner
+        "email": scanned_user,                 # ✅ scanned
+        "full_name": scanned.full_name or scanned.first_name,
+        "mobile_phone": scanned.mobile_no,
+        "profile_photo": scanned.user_image
+    })
+    conn.insert(ignore_permissions=True)
 
-	if add.pincode:
-		search_text = search_text + ",<br>" + add.pincode
-	
-	return search_text
-
-def atten_food_script():
-	participant_lsit=frappe.get_all("Participant")
-	for i in participant_lsit:
-		participant=frappe.get_doc("Participant",i.name)
-		if participant.food_scan:
-			for j in participant.food_scan:
-				food_scan_date=j.get("datetime").date()
-				match=False
-				for k in participant.attendance_list:
-					att_scan_date=k.get("datetime").date()
-					if  food_scan_date==att_scan_date:
-						match=True
-						break
-
-				if match==False:
-					participant.append("attendance_list", {
-						"datetime":j.datetime
-					})
-					participant.save()
-					frappe.db.commit()
-
-
-
-@frappe.whitelist(allow_guest=True)
-def register_event_participant(email, confer_id):
-
-	if email and confer_id:
-		user = frappe.db.get_value("User", {"email": email}, "name")
-		if not user:
-			return "User does not exist. Please register as a new user."
-		
-		participant_id = frappe.db.get_value("Participant", {"e_mail": email}, "name")
-		existing_registration = frappe.db.exists("Event Participant", {
-			"event": confer_id,
-			"participant": participant_id
-		})
-		
-		if existing_registration:
-				
-			return "You are already registered for this event."
-		
-		
-		event_participant_doc = frappe.new_doc('Event Participant')
-		event_participant_doc.update({
-						"participant": participant_id,
-						"event": confer_id,
-						"event_role":"Participant"
-					})
-		
-		event_participant_doc.save(ignore_permissions=True)
+    return {"status": "created"}
 
 
-	# code 349 sep	
-		# user_permission_doc = frappe.new_doc('User Permission')
-		# user_permission_doc.update({
-		# 			"user": email,
-		# 			"allow": "Event Participant",
-		# 			"for_value": event_participant_doc.name,
-		# 			"apply_to_all_doctypes": True,
-		# 			# "applicable_for": ["Confer"]
-		# 		})
-		
-		# user_permission_doc.save(ignore_permissions=True)
-		  # Create User Permission for Conference doctype
-		confer_permission_doc = frappe.new_doc('User Permission')
-		
-		confer_permission_doc.update({
-            "user": email,
-            "allow": "Conference",
-            "for_value": confer_id,
-            "apply_to_all_doctypes": False,  # Set to False if you want this permission to apply only to this specific Conference
-        })
-		confer_permission_doc.save(ignore_permissions=True)
-
-		
-		
-		return "Registration successful!"
-	else:
-		return "Event is not found"
-
-
-
-@frappe.whitelist(allow_guest=True)
-def connection_doc(doc_name,email):
-
-	user_data = frappe.get_doc("Participant", doc_name)
-	print(user_data,"this is data")
-	participant_id = frappe.db.get_value("Participant", {"e_mail": email}, "name")
-	print(participant_id,"participant_id")
-	print(email,"emailemail")
-	connection_id = frappe.db.get_value("Connections", {"participant_id": participant_id, "email": user_data.e_mail}, "name")
-	print(connection_id,"this is connection id..................")
-	if connection_id:
-		frappe.throw("This participant is already connected")
-
-	event_id = frappe.db.get_value("Conference", {"is_default": 1}, "name")
-	print(event_id,"this is even")
-
-	if user_data:
-		new_connection = frappe.new_doc('Connections')
-		new_connection.update({
-			"participant_id": participant_id,     
-            "full_name": user_data.full_name,  # Participant who scanned the QR
-            "email": user_data.e_mail, 
-			"mobile_phone":user_data.mobile_number,
-			"business_category":user_data.business_category,
-			"profile_photo":user_data.profile_photo,
-			"event":event_id
-        })
-		new_connection.save(ignore_permissions=True)
-		return "Updated Connectionsss"
-
-	else:
-		frappe.throw("No participant found with the given QR code.")
-
-
-@frappe.whitelist(allow_guest=True)
+@frappe.whitelist()
 def connection_details(email):
-	participant = frappe.db.get_value("Participant", {"e_mail": email}, "name")
-	if not participant:
-		frappe.throw("No participant found with the given email.")
-
-	# Get all connections related to the participant
-	connections = frappe.get_all("Connections", 
-		filters={"participant_id": participant}, 
-		fields=["full_name", "email", "mobile_phone as phone", "business_category","profile_photo","event"]
-	)
-
-	print(connections,"this is connectiosnss")
-	return connections
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		# Prepare the data to be displayed in HTML format
-		# participant_info = f"""
-		# 	<p><strong>Full Name:</strong> {user_data.full_name}</p>
-		# 	<p><strong>Email:</strong> {user_data.e_mail}</p>
-		# 	<p><strong>Mobile:</strong> {user_data.mobile_number}</p>
-		# 	<p><strong>Business Category:</strong> {user_data.business_category}</p>
-		# 	<p><strong>Chapter:</strong> {user_data.chapter}</p>
-		# """
-		# return participant_info
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# @frappe.whitelist(allow_guest=True)
-# def testapi():
-# 	print("welcomeeeeeeeeeeeeeeeeeeeeee")
-
-# 	child_records = frappe.get_all("Conference Agenda", filters={"parentfield": ["=", ""]}, fields=["name"])
-
-# 	for record in child_records:
-# 		frappe.db.set_value("Conference Agenda", record['name'], 'parentfield', 'agenda')
-# 		frappe.db.commit()
-
-# 	frappe.msgprint(f"Updated {len(child_records)} records successfully!")
-
-
-
-
-# @frappe.whitelist(allow_guest=True)
-# def testapi():
-# 	data = frappe.db.sql("""
-#     SELECT rg.name AS registration_desk, ep.name AS participant_id, ep.full_name, pt.profile_photo
-#     FROM `tabRegistration Desk` AS rg
-#     JOIN `tabParticipant` AS pt
-#     ON pt.old_data = rg.old_id
-#     JOIN `tabEvent Participant` AS ep
-#     ON ep.participant = pt.name
-# 	""", as_dict=1)  # Use as_dict=1 for easier field access
-
-# 	for item in data:
-# 		# Create a new Participant Table child doctype entry
-# 		doc = frappe.new_doc('Participant Table')
-# 		doc.participant_id = item['participant_id']
-# 		doc.participant_name = item['full_name']
-# 		doc.profile_img = item['profile_photo']
-# 		doc.parent = item['registration_desk']
-# 		doc.parentfield = "participant"  # Ensure this is correct
-# 		doc.parenttype = 'Registration Desk'
-
-# 		# Insert the new doc (this also saves it)
-# 		try:
-# 			doc.insert(ignore_permissions=True)
-# 			frappe.db.commit()  # Ensure the transaction is committed
-# 		except Exception as e:
-# 			frappe.log_error(f"Error inserting participant: {str(e)}", "Participant Insert Error")
-
+    """
+    Fetch all connections OWNED by this user
+    """
+    return frappe.get_all(
+        "Connections",
+        filters={"participant_id": email},
+        fields=[
+            "full_name",
+            "email",
+            "mobile_phone as phone",
+            "business_category",
+            "profile_photo",
+            "event"
+        ]
+    )

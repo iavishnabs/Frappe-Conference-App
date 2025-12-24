@@ -1,7 +1,7 @@
 {
- "_liked_by": "[\"Administrator\"]",
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:CON-{YY}-{###}",
  "creation": "2024-10-23 10:16:02.096517",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -21,10 +21,11 @@
    "fieldtype": "Section Break"
   },
   {
+   "description": "Connected By",
    "fieldname": "participant_id",
    "fieldtype": "Link",
-   "label": "Participant id",
-   "options": "Participant"
+   "label": "Participant",
+   "options": "User"
   },
   {
    "fieldname": "full_name",
@@ -32,9 +33,11 @@
    "label": "Full Name"
   },
   {
+   "description": "Connected User",
    "fieldname": "email",
-   "fieldtype": "Data",
-   "label": "Email"
+   "fieldtype": "Link",
+   "label": "Email",
+   "options": "User"
   },
   {
    "fieldname": "mobile_phone",
@@ -60,10 +63,11 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-12-22 09:42:19.575588",
+ "modified": "2025-12-23 15:49:54.530285",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Connections",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

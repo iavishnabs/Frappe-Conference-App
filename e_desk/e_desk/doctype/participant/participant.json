@@ -15,38 +15,60 @@
   "prefix",
   "first_name",
   "last_name",
-  "full_name",
   "column_break_sylpb",
-  "gender",
-  "date_of_birth",
+  "full_name",
   "profile_photo",
   "qr_preview",
   "qr",
   "more_information_section",
-  "business_category",
-  "status",
-  "is_paid",
+  "gender",
+  "date_of_birth",
+  "stall_or_sponsor_booking",
+  "booked_by",
   "customer",
+  "user",
   "column_break_gsdr",
-  "role",
   "participant_type",
+  "status",
   "meal_included",
+  "meal_preference",
+  "is_paid",
   "kit_provided",
   "address_contact_tab",
   "address_and_contact_section",
-  "address",
+  "address_html",
   "participant_address",
-  "column_break_rjon",
-  "contact",
-  "participant_contact",
   "mobile_number",
+  "column_break_rjon",
+  "contact_html",
+  "participant_contact",
   "e_mail",
-  "eventsconferences_tab",
-  "list_of_events",
-  "connections_tab",
-  "scan_qr",
-  "submit",
-  "address_html"
+  "section_break_sxpb",
+  "address_title",
+  "address_line_1",
+  "address_line_2",
+  "column_break_pmhj",
+  "country",
+  "state",
+  "city",
+  "postal_code",
+  "organization_tab",
+  "company__organization",
+  "gst__pan_no",
+  "brand_logo",
+  "column_break_icmv",
+  "business_category",
+  "role",
+  "references_tab",
+  "invitee_name",
+  "invitee_email",
+  "column_break_mjqd",
+  "invitee_phone",
+  "travel_tab",
+  "flight_no",
+  "departure_time",
+  "column_break_hbtt",
+  "arrival_time"
  ],
  "fields": [
   {
@@ -190,12 +212,6 @@
    "label": "Address and Contact"
   },
   {
-   "fieldname": "address",
-   "fieldtype": "HTML",
-   "label": "Address",
-   "read_only": 1
-  },
-  {
    "fetch_from": "customer.customer_primary_address",
    "fieldname": "participant_address",
    "fieldtype": "Link",
@@ -207,12 +223,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "contact",
-   "fieldtype": "HTML",
-   "label": "Contact",
-   "read_only": 1
-  },
-  {
    "fetch_from": "customer.customer_primary_contact",
    "fetch_if_empty": 1,
    "fieldname": "participant_contact",
@@ -221,70 +231,182 @@
    "options": "Contact"
   },
   {
-   "fetch_from": "participant_contact.mobile_no",
    "fieldname": "mobile_number",
    "fieldtype": "Data",
    "label": "Mobile Phone",
    "options": "phone"
   },
   {
-   "fetch_from": "participant_contact.email_id",
    "fieldname": "e_mail",
-   "fieldtype": "Link",
-   "label": "Email",
-   "options": "User"
-  },
-  {
-   "fieldname": "eventsconferences_tab",
-   "fieldtype": "Tab Break",
-   "label": "Events/Conferences"
-  },
-  {
-   "fieldname": "list_of_events",
-   "fieldtype": "HTML",
-   "label": "List of Events"
-  },
-  {
-   "fieldname": "connections_tab",
-   "fieldtype": "Tab Break",
-   "label": "Connections"
-  },
-  {
-   "fieldname": "scan_qr",
    "fieldtype": "Data",
-   "label": "Scan QR",
-   "options": "Barcode"
-  },
-  {
-   "fieldname": "submit",
-   "fieldtype": "Button",
-   "hidden": 1,
-   "label": "Submit"
-  },
-  {
-   "fieldname": "address_html",
-   "fieldtype": "HTML",
-   "label": "Address html"
+   "label": "Email"
   },
   {
    "fieldname": "kit_provided",
    "fieldtype": "Data",
    "label": "Kit Provided"
+  },
+  {
+   "fieldname": "company__organization",
+   "fieldtype": "Data",
+   "label": "Company / Organization"
+  },
+  {
+   "description": "(If you do not have GST, please submit PAN)",
+   "fieldname": "gst__pan_no",
+   "fieldtype": "Data",
+   "label": "GST / PAN No."
+  },
+  {
+   "fieldname": "brand_logo",
+   "fieldtype": "Attach Image",
+   "label": "Brand Logo"
+  },
+  {
+   "fieldname": "flight_no",
+   "fieldtype": "Data",
+   "label": "Flight No"
+  },
+  {
+   "fieldname": "departure_time",
+   "fieldtype": "Date",
+   "label": "Departure Time"
+  },
+  {
+   "fieldname": "arrival_time",
+   "fieldtype": "Datetime",
+   "label": "Arrival Time"
+  },
+  {
+   "fieldname": "organization_tab",
+   "fieldtype": "Tab Break",
+   "label": "Organization"
+  },
+  {
+   "fieldname": "references_tab",
+   "fieldtype": "Tab Break",
+   "label": "References"
+  },
+  {
+   "fieldname": "travel_tab",
+   "fieldtype": "Tab Break",
+   "label": "Travel"
+  },
+  {
+   "fieldname": "column_break_icmv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_mjqd",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_hbtt",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:!doc.participant_address",
+   "fieldname": "section_break_sxpb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "address_title",
+   "fieldtype": "Data",
+   "label": "Address Title"
+  },
+  {
+   "fieldname": "address_line_1",
+   "fieldtype": "Data",
+   "label": "Address Line 1"
+  },
+  {
+   "fieldname": "address_line_2",
+   "fieldtype": "Data",
+   "label": "Address Line 2"
+  },
+  {
+   "fieldname": "column_break_pmhj",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country"
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Data",
+   "label": "State"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "postal_code",
+   "fieldtype": "Data",
+   "label": "Postal Code"
+  },
+  {
+   "fieldname": "stall_or_sponsor_booking",
+   "fieldtype": "Link",
+   "label": "Stall / Sponsor Booking",
+   "options": "Event Booking"
+  },
+  {
+   "fieldname": "booked_by",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "Booked by",
+   "options": "User"
+  },
+  {
+   "fieldname": "contact_html",
+   "fieldtype": "HTML",
+   "label": "Contact",
+   "read_only": 1
+  },
+  {
+   "fieldname": "address_html",
+   "fieldtype": "HTML",
+   "label": "Address",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.user",
+   "fieldname": "user",
+   "fieldtype": "Link",
+   "label": "User ID",
+   "options": "User"
+  },
+  {
+   "fieldname": "invitee_name",
+   "fieldtype": "Data",
+   "label": "Name"
+  },
+  {
+   "fieldname": "invitee_email",
+   "fieldtype": "Data",
+   "label": "Email"
+  },
+  {
+   "fieldname": "invitee_phone",
+   "fieldtype": "Data",
+   "label": "Phone"
+  },
+  {
+   "fieldname": "meal_preference",
+   "fieldtype": "Link",
+   "label": "Meal Preference",
+   "options": "Meal Preference"
   }
  ],
  "image_field": "profile_photo",
  "index_web_pages_for_search": 1,
- "links": [
-  {
-   "link_doctype": "Event Participant",
-   "link_fieldname": "participant"
-  },
-  {
-   "link_doctype": "Connections",
-   "link_fieldname": "participant_id"
-  }
- ],
- "modified": "2025-12-22 10:10:48.815001",
+ "links": [],
+ "modified": "2025-12-23 17:14:41.743330",
  "modified_by": "Administrator",
  "module": "E Desk",
  "name": "Participant",
